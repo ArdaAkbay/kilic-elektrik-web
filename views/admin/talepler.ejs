@@ -1,0 +1,53 @@
+<%- include('../partials/admin-ust') %>
+
+<div class="panel-bas">
+  <div>
+    <h1>Talepler</h1>
+    <p class="alt-baslik">Kartı açıp durumu güncelleyin. Müşteri takip sayfasında yeni durumu hemen görür.</p>
+  </div>
+</div>
+
+<div class="ozet" aria-label="Özet">
+  <div class="vurgu"><b><%= ozet.yeni %></b><span>Yeni, aranmayı bekliyor</span></div>
+  <div><b><%= ozet.acik %></b><span>Açık talep</span></div>
+  <div><b><%= ozet.buHafta %></b><span>Son 7 günde gelen</span></div>
+  <div><b><%= ozet.toplam %></b><span><%= q || tur ? 'Filtreyle eşleşen' : 'Toplam talep' %></span></div>
+</div>
+
+<form class="arac-cubugu" method="get" action="/admin" role="search">
+  <label class="sr-only" for="q">Ara</label>
+  <input id="q" name="q" type="search" placeholder="Kod, ad, firma, hizmet veya telefon" value="<%= q %>">
+  <% if (tur) { %><input type="hidden" name="tur" value="<%= tur %>"><% } %>
+  <button class="btn ghost kucuk" type="submit">Ara</button>
+  <nav class="filtre" aria-label="Türe göre filtrele">
+    <% [['', 'Tümü'], ['ev', 'Ev'], ['proje', 'Proje']].forEach(([deger, ad]) => { %>
+      <a href="/admin?<%= new URLSearchParams({ ...(deger ? { tur: deger } : {}), ...(q ? { q } : {}) }) %>" aria-current="<%= tur === deger %>"><%= ad %></a>
+    <% }) %>
+  </nav>
+  <% if (q || tur) { %><a class="muted" href="/admin">Filtreyi temizle</a><% } %>
+</form>
+
+<div class="pano">
+  <% sutunlar.forEach((s) => { %>
+    <section class="sutun" data-durum="<%= s.value %>" aria-labelledby="sutun-<%= s.value %>">
+      <h2 id="sutun-<%= s.value %>"><%= s.label %> <span><%= s.talepler.length %></span></h2>
+      <% if (!s.talepler.length) { %><p class="bos-sutun">Talep yok</p><% } %>
+      <% s.talepler.forEach((t) => { %>
+        <a class="kart" href="/admin/talepler/<%= t._id %>">
+          <span class="kart-kod"><%= t.takipKodu %></span>
+          <b><%= t.tur === 'ev' ? t.hizmetAdi : labelOf(sabitler.YAPI_TIPLERI, t.yapiTipi) + `, ${t.katSayisi} kat` %></b>
+          <span><%= t.adSoyad %><% if (t.firma) { %> · <%= t.firma %><% } %></span>
+          <span class="kart-alt">
+            <span class="etiket-tur <%= t.tur %>"><%= t.tur === 'ev' ? 'Ev' : 'Proje' %></span>
+            <span><%= t.ilce %></span>
+            <span><%= tarih(t.createdAt) %></span>
+            <% if (t.fotograflar && t.fotograflar.length) { %><span><%= t.fotograflar.length %> foto</span><% } %>
+            <% if (t.projeDosyasi) { %><span>PDF</span><% } %>
+          </span>
+        </a>
+      <% }) %>
+    </section>
+  <% }) %>
+</div>
+
+<%- include('../partials/admin-alt') %>

@@ -1,0 +1,43 @@
+<%- include('../partials/admin-ust') %>
+<% const yeni = !hizmet._id; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan';
+   const aktif = hizmet.aktif === true || hizmet.aktif === 'on'; %>
+
+<div class="panel-bas">
+  <div>
+    <p class="muted"><a href="/admin/hizmetler">Hizmetler</a> / <%= yeni ? 'Yeni' : hizmet.ad %></p>
+    <h1><%= baslik %></h1>
+  </div>
+</div>
+
+<form class="form panel-form" method="post" action="<%= yeni ? '/admin/hizmetler' : `/admin/hizmetler/${hizmet._id}?_method=PUT` %>" novalidate>
+  <%- include('../partials/form-ozeti', { hatalar }) %>
+
+  <div class="<%= sinif('ad') %>">
+    <label for="ad">Hizmet adı</label>
+    <input id="ad" name="ad" type="text" required maxlength="60" value="<%= hizmet.ad || '' %>" placeholder="Örn. Priz ve anahtar ekleme">
+    <%- include('../partials/alan-hatasi', { alan: 'ad' }) %>
+  </div>
+  <div class="<%= sinif('aciklama') %>">
+    <label for="aciklama">Kısa açıklama <span class="istege-bagli">(isteğe bağlı, en fazla 240 karakter)</span></label>
+    <textarea id="aciklama" name="aciklama" maxlength="240" style="min-height:80px"><%= hizmet.aciklama || '' %></textarea>
+    <%- include('../partials/alan-hatasi', { alan: 'aciklama' }) %>
+  </div>
+  <div class="satir">
+    <div class="<%= sinif('sira') %>">
+      <label for="sira">Sıra</label>
+      <span class="ipucu">Küçük sayı listede önce görünür.</span>
+      <input id="sira" name="sira" type="number" min="0" max="999" value="<%= hizmet.sira ?? '' %>">
+      <%- include('../partials/alan-hatasi', { alan: 'sira' }) %>
+    </div>
+    <div class="alan" style="align-self:end">
+      <label class="onay"><input type="checkbox" name="aktif"<% if (aktif) { %> checked<% } %>><span>Sitede göster</span></label>
+    </div>
+  </div>
+
+  <div class="form-alt">
+    <a class="muted" href="/admin/hizmetler">Vazgeç</a>
+    <button class="btn primary" type="submit" data-gonder="Kaydediliyor…"><%= yeni ? 'Hizmeti ekle' : 'Değişiklikleri kaydet' %></button>
+  </div>
+</form>
+
+<%- include('../partials/admin-alt') %>

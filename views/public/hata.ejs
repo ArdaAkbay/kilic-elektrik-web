@@ -1,0 +1,15 @@
+<%- include('../partials/ust') %>
+
+<div class="wrap">
+  <div class="hata-sayfa">
+    <span class="kod-no"><%= kod %></span>
+    <h1><%= baslik %></h1>
+    <p class="muted"><%= mesaj %></p>
+    <div class="actions">
+      <a class="btn primary" href="/">Ana sayfaya dön</a>
+      <a class="btn ghost" href="tel:+<%= isletme.phoneIntl %>">Ara: <%= isletme.phoneDisplay %></a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/alt') %>

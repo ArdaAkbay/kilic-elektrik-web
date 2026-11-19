@@ -1,0 +1,10 @@
+<% const hataListesi = Object.entries(hatalar || {}); %>
+<% if (hataListesi.length) { %>
+<div class="form-ozet" role="alert" tabindex="-1" data-odaklan>
+  <h2><%= hataListesi.length %> alanı düzeltmeniz gerekiyor</h2>
+  <ul>
+    <% hataListesi.forEach(([alan, mesaj]) => { %><li><a href="#<%= alan %>"><%= mesaj %></a></li><% }) %>
+  </ul>
+  <% if (typeof dosyaUyarisi !== 'undefined' && dosyaUyarisi) { %><p class="muted">Güvenlik nedeniyle seçtiğiniz dosyaları yeniden seçmeniz gerekiyor.</p><% } %>
+</div>
+<% } %>

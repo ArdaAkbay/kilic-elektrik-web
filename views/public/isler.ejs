@@ -1,0 +1,39 @@
+<%- include('../partials/ust') %>
+
+<div class="wrap">
+  <div class="sayfa-bas">
+    <p class="yol"><a href="/">Ana sayfa</a> / Yaptığımız işler</p>
+    <h1>Yaptığımız işler</h1>
+    <p class="giris">Evden fabrikaya, kendi ekibimizle yaptığımız işlerden bir seçki. Fotoğrafların hepsi kendi işlerimizden.</p>
+  </div>
+  <nav class="filtre" aria-label="Kategoriye göre filtrele">
+    <a href="/isler" aria-current="<%= !kategori %>">Tümü</a>
+    <% sabitler.IS_KATEGORILERI.forEach((k) => { %>
+      <a href="/isler?kategori=<%= k.value %>" aria-current="<%= kategori === k.value %>"><%= k.label %></a>
+    <% }) %>
+  </nav>
+</div>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <% if (isler.length) { %>
+      <div class="grid">
+        <% isler.forEach((is) => { %>
+          <figure>
+            <img src="<%= is.fotograflar[0] && is.fotograflar[0].url %>" alt="<%= is.baslik %>" loading="lazy">
+            <% if (is.fotograflar.length > 1) { %><span class="adet"><%= is.fotograflar.length %> fotoğraf</span><% } %>
+            <figcaption><b><%= is.baslik %></b><span><%= labelOf(sabitler.IS_KATEGORILERI, is.kategori) %><% if (is.aciklama) { %> · <%= is.aciklama %><% } %></span></figcaption>
+          </figure>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="bos">Bu kategoride henüz iş eklenmedi.</p>
+    <% } %>
+    <div class="actions" style="margin-top:36px">
+      <a class="btn primary" href="/evim">Evim için talep oluştur</a>
+      <a class="btn ghost" href="/projem">Projem için görüşelim</a>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>

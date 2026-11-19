@@ -1,0 +1,110 @@
+<%- include('../partials/ust') %>
+<% const d = degerler; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan'; const aria = (a) => hatalar[a] ? `aria-invalid="true" aria-describedby="${a}-hata"` : ''; %>
+
+<div class="wrap">
+  <div class="sayfa-bas">
+    <p class="yol"><a href="/">Ana sayfa</a> / <a href="/evim">Evim için</a> / Talep</p>
+    <h1>Ev talebi oluştur</h1>
+    <p class="giris">Ne kadar net anlatırsanız ustamız o kadar hazırlıklı gelir. Bir fotoğraf çoğu zaman uzun bir açıklamadan daha çok şey söyler.</p>
+  </div>
+</div>
+<div class="wall ince" role="presentation"></div>
+
+<section>
+  <div class="wrap yan-yana">
+    <form class="form" method="post" action="/evim/talep" enctype="multipart/form-data" novalidate>
+      <%- include('../partials/form-ozeti', { hatalar, dosyaUyarisi: true }) %>
+
+      <fieldset>
+        <legend>İş</legend>
+        <div class="<%= sinif('hizmet') %>">
+          <label for="hizmet">Hangi iş?</label>
+          <select id="hizmet" name="hizmet" required <%- aria('hizmet') %>>
+            <option value="">Seçin</option>
+            <% hizmetler.forEach((h) => { %>
+              <option value="<%= h._id %>"<% if (String(d.hizmet) === String(h._id)) { %> selected<% } %>><%= h.ad %></option>
+            <% }) %>
+          </select>
+          <%- include('../partials/alan-hatasi', { alan: 'hizmet' }) %>
+        </div>
+
+        <div class="<%= sinif('aciklama') %>">
+          <label for="aciklama">Kısaca anlatın</label>
+          <span class="ipucu">Örnek: "Salonda 2 priz çalışmıyor, sigorta atmıyor. Mutfağa 1 priz eklenecek."</span>
+          <textarea id="aciklama" name="aciklama" required minlength="10" maxlength="1000" <%- aria('aciklama') %>><%= d.aciklama || '' %></textarea>
+          <%- include('../partials/alan-hatasi', { alan: 'aciklama' }) %>
+        </div>
+
+        <div class="<%= sinif('fotograflar') %>">
+          <span class="etiket" id="foto-etiket">Fotoğraf <span class="istege-bagli">(isteğe bağlı, en fazla 3)</span></span>
+          <div class="dosya-kutu">
+            <input id="fotograflar" name="fotograflar" type="file" accept="image/*,.heic,.heif" multiple data-onizleme="foto-onizleme" data-max="3" data-max-mb="5" aria-labelledby="foto-etiket" <%- aria('fotograflar') %>>
+            <span class="ipucu">Arızalı priz, sigorta kutusu ya da ışık takılacak yer. Her biri en fazla 5 MB.</span>
+            <div class="onizleme" id="foto-onizleme"></div>
+          </div>
+          <%- include('../partials/alan-hatasi', { alan: 'fotograflar' }) %>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>İletişim ve zaman</legend>
+        <div class="satir">
+          <div class="<%= sinif('adSoyad') %>">
+            <label for="adSoyad">Ad soyad</label>
+            <input id="adSoyad" name="adSoyad" type="text" autocomplete="name" required maxlength="60" value="<%= d.adSoyad || '' %>" <%- aria('adSoyad') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'adSoyad' }) %>
+          </div>
+          <div class="<%= sinif('telefon') %>">
+            <label for="telefon">Cep telefonu</label>
+            <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="05XX XXX XX XX" required value="<%= d.telefon || '' %>" <%- aria('telefon') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'telefon' }) %>
+          </div>
+        </div>
+        <div class="satir">
+          <div class="<%= sinif('ilce') %>">
+            <label for="ilce">İlçe</label>
+            <input id="ilce" name="ilce" type="text" autocomplete="address-level2" placeholder="Bağcılar" required maxlength="40" value="<%= d.ilce || '' %>" <%- aria('ilce') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'ilce' }) %>
+          </div>
+          <div class="<%= sinif('adres') %>">
+            <label for="adres">Mahalle / adres <span class="istege-bagli">(isteğe bağlı)</span></label>
+            <input id="adres" name="adres" type="text" autocomplete="street-address" maxlength="200" value="<%= d.adres || '' %>" <%- aria('adres') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'adres' }) %>
+          </div>
+        </div>
+        <div class="<%= sinif('uygunZaman') %>">
+          <span class="etiket" id="zaman-etiket">Size ne zaman uygun?</span>
+          <div class="secimler" role="radiogroup" aria-labelledby="zaman-etiket">
+            <% sabitler.UYGUN_ZAMANLAR.forEach((z, i) => { %>
+              <label class="secim"><input type="radio" name="uygunZaman" value="<%= z.value %>" <% if (i === 0) { %>id="uygunZaman"<% } %> <% if (d.uygunZaman === z.value) { %>checked<% } %> required><span><%= z.label %></span></label>
+            <% }) %>
+          </div>
+          <%- include('../partials/alan-hatasi', { alan: 'uygunZaman' }) %>
+        </div>
+      </fieldset>
+
+      <div class="<%= sinif('kvkkOnay') %>">
+        <label class="onay"><input id="kvkkOnay" type="checkbox" name="kvkkOnay" value="evet" required <% if (d.kvkkOnay === 'evet') { %>checked<% } %>><span><a href="/kvkk" target="_blank">Aydınlatma metnini</a> okudum. Bilgilerimin ve fotoğraflarımın bu talep için kullanılmasını kabul ediyorum.</span></label>
+        <%- include('../partials/alan-hatasi', { alan: 'kvkkOnay' }) %>
+      </div>
+
+      <div class="form-alt">
+        <p>Gönderince size bir takip kodu vereceğiz. Ustamız talebinizi inceleyip sizi arar.</p>
+        <button class="btn primary" type="submit" data-gonder="Gönderiliyor…">Talebi gönder</button>
+      </div>
+    </form>
+
+    <aside class="yan-kutu" aria-label="Sonraki adımlar">
+      <h3>Gönderdikten sonra</h3>
+      <ol>
+        <li>Size bir takip kodu veririz.</li>
+        <li>Ustamız fotoğrafları inceler ve sizi arar.</li>
+        <li>Keşif günü belirlenir, net fiyat verilir.</li>
+      </ol>
+      <p class="muted">Acil bir durum mu? Arayın:</p>
+      <a class="tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a>
+    </aside>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>

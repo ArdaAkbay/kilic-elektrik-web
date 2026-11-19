@@ -1,0 +1,135 @@
+<%- include('../partials/ust') %>
+<% const d = degerler; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan'; const aria = (a) => hatalar[a] ? `aria-invalid="true" aria-describedby="${a}-hata"` : ''; const kapsam = d.kapsam || []; %>
+
+<div class="wrap">
+  <div class="sayfa-bas">
+    <p class="yol"><a href="/">Ana sayfa</a> / Projem için</p>
+    <h1>Projem için</h1>
+    <p class="giris">Bina, mağaza, ofis ya da atölye. Projelerde fiyat keşif ve proje incelemesinden sonra verilir. Aşağıdaki bilgileri bırakın, ustamız sizi arayıp görüşme ayarlasın.</p>
+  </div>
+</div>
+<div class="wall ince" role="presentation"></div>
+
+<section>
+  <div class="wrap yan-yana">
+    <form class="form" method="post" action="/projem" enctype="multipart/form-data" novalidate>
+      <%- include('../partials/form-ozeti', { hatalar, dosyaUyarisi: true }) %>
+
+      <fieldset>
+        <legend>Yapı</legend>
+        <div class="<%= sinif('yapiTipi') %>">
+          <label for="yapiTipi">Yapı tipi</label>
+          <select id="yapiTipi" name="yapiTipi" required <%- aria('yapiTipi') %>>
+            <option value="">Seçin</option>
+            <% sabitler.YAPI_TIPLERI.forEach((y) => { %><option value="<%= y.value %>"<% if (d.yapiTipi === y.value) { %> selected<% } %>><%= y.label %></option><% }) %>
+          </select>
+          <%- include('../partials/alan-hatasi', { alan: 'yapiTipi' }) %>
+        </div>
+        <div class="satir uclu">
+          <div class="<%= sinif('katSayisi') %>">
+            <label for="katSayisi">Kat sayısı</label>
+            <input id="katSayisi" name="katSayisi" type="number" inputmode="numeric" min="1" max="60" required value="<%= d.katSayisi ?? '' %>" <%- aria('katSayisi') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'katSayisi' }) %>
+          </div>
+          <div class="<%= sinif('metrekare') %>">
+            <label for="metrekare">Yaklaşık alan (m²)</label>
+            <input id="metrekare" name="metrekare" type="number" inputmode="numeric" min="10" required value="<%= d.metrekare ?? '' %>" <%- aria('metrekare') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'metrekare' }) %>
+          </div>
+          <div class="<%= sinif('daireSayisi') %>">
+            <label for="daireSayisi">Daire / birim <span class="istege-bagli">(varsa)</span></label>
+            <input id="daireSayisi" name="daireSayisi" type="number" inputmode="numeric" min="1" max="500" value="<%= d.daireSayisi ?? '' %>" <%- aria('daireSayisi') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'daireSayisi' }) %>
+          </div>
+        </div>
+        <div class="<%= sinif('kapsam') %>">
+          <span class="etiket" id="kapsam-etiket">İşin kapsamı <span class="istege-bagli">(birden fazla seçebilirsiniz)</span></span>
+          <div class="secimler" role="group" aria-labelledby="kapsam-etiket">
+            <% sabitler.PROJE_KAPSAMI.forEach((k, i) => { %>
+              <label class="secim"><input type="checkbox" name="kapsam" value="<%= k.value %>" <% if (i === 0) { %>id="kapsam"<% } %> <% if (kapsam.includes(k.value)) { %>checked<% } %>><span><%= k.label %></span></label>
+            <% }) %>
+          </div>
+          <%- include('../partials/alan-hatasi', { alan: 'kapsam' }) %>
+        </div>
+        <div class="<%= sinif('aciklama') %>">
+          <label for="aciklama">Projeyi kısaca anlatın</label>
+          <span class="ipucu">Örnek: "Kaba inşaatı biten 4 katlı, 8 daireli apartman. Şubat'ta tesisata başlanması gerekiyor."</span>
+          <textarea id="aciklama" name="aciklama" required minlength="10" maxlength="1000" <%- aria('aciklama') %>><%= d.aciklama || '' %></textarea>
+          <%- include('../partials/alan-hatasi', { alan: 'aciklama' }) %>
+        </div>
+        <div class="<%= sinif('projeDosyasi') %>">
+          <span class="etiket" id="pdf-etiket">Proje çizimi <span class="istege-bagli">(isteğe bağlı, PDF, en fazla 10 MB)</span></span>
+          <div class="dosya-kutu">
+            <input id="projeDosyasi" name="projeDosyasi" type="file" accept="application/pdf,.pdf" data-onizleme="pdf-onizleme" data-max="1" data-max-mb="10" aria-labelledby="pdf-etiket" <%- aria('projeDosyasi') %>>
+            <div class="onizleme" id="pdf-onizleme"></div>
+          </div>
+          <%- include('../partials/alan-hatasi', { alan: 'projeDosyasi' }) %>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>İletişim</legend>
+        <div class="satir">
+          <div class="<%= sinif('adSoyad') %>">
+            <label for="adSoyad">Ad soyad</label>
+            <input id="adSoyad" name="adSoyad" type="text" autocomplete="name" required maxlength="60" value="<%= d.adSoyad || '' %>" <%- aria('adSoyad') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'adSoyad' }) %>
+          </div>
+          <div class="<%= sinif('firma') %>">
+            <label for="firma">Firma <span class="istege-bagli">(varsa)</span></label>
+            <input id="firma" name="firma" type="text" autocomplete="organization" maxlength="80" value="<%= d.firma || '' %>" <%- aria('firma') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'firma' }) %>
+          </div>
+        </div>
+        <div class="satir">
+          <div class="<%= sinif('telefon') %>">
+            <label for="telefon">Cep telefonu</label>
+            <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="05XX XXX XX XX" required value="<%= d.telefon || '' %>" <%- aria('telefon') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'telefon' }) %>
+          </div>
+          <div class="<%= sinif('eposta') %>">
+            <label for="eposta">E-posta <span class="istege-bagli">(isteğe bağlı)</span></label>
+            <input id="eposta" name="eposta" type="email" autocomplete="email" maxlength="120" value="<%= d.eposta || '' %>" <%- aria('eposta') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'eposta' }) %>
+          </div>
+        </div>
+        <div class="satir">
+          <div class="<%= sinif('ilce') %>">
+            <label for="ilce">Projenin ilçesi</label>
+            <input id="ilce" name="ilce" type="text" required maxlength="40" value="<%= d.ilce || '' %>" <%- aria('ilce') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'ilce' }) %>
+          </div>
+          <div class="<%= sinif('adres') %>">
+            <label for="adres">Mahalle / adres <span class="istege-bagli">(isteğe bağlı)</span></label>
+            <input id="adres" name="adres" type="text" maxlength="200" value="<%= d.adres || '' %>" <%- aria('adres') %>>
+            <%- include('../partials/alan-hatasi', { alan: 'adres' }) %>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="<%= sinif('kvkkOnay') %>">
+        <label class="onay"><input id="kvkkOnay" type="checkbox" name="kvkkOnay" value="evet" required <% if (d.kvkkOnay === 'evet') { %>checked<% } %>><span><a href="/kvkk" target="_blank">Aydınlatma metnini</a> okudum. Bilgilerimin ve proje dosyamın bu görüşme için kullanılmasını kabul ediyorum.</span></label>
+        <%- include('../partials/alan-hatasi', { alan: 'kvkkOnay' }) %>
+      </div>
+
+      <div class="form-alt">
+        <p>Gönderince size bir takip kodu vereceğiz. Ustamız projeyi inceleyip görüşme için sizi arar.</p>
+        <button class="btn primary" type="submit" data-gonder="Gönderiliyor…">Görüşme talep et</button>
+      </div>
+    </form>
+
+    <aside class="yan-kutu" aria-label="Proje süreci">
+      <h3>Projelerde süreç</h3>
+      <ol>
+        <li>Bilgileri ve varsa çizimi inceleriz.</li>
+        <li>Sizi arar, yerinde keşif ayarlarız.</li>
+        <li>Malzeme ve işçiliği kalem kalem gösteren teklif veririz.</li>
+        <li>İş takvimini birlikte planlarız.</li>
+      </ol>
+      <p class="muted">Önce konuşmak isterseniz:</p>
+      <a class="tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a>
+    </aside>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>

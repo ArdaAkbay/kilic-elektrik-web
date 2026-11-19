@@ -1,0 +1,70 @@
+<%- include('../partials/admin-ust') %>
+<% const yeni = !is._id; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan';
+   const tarihDeger = is.tarih ? new Date(is.tarih).toISOString().slice(0, 10) : '';
+   const silinecek = [].concat(is.silinecekFotograflar || []); %>
+
+<div class="panel-bas">
+  <div>
+    <p class="muted"><a href="/admin/isler">İşler</a> / <%= yeni ? 'Yeni' : is.baslik %></p>
+    <h1><%= baslik %></h1>
+  </div>
+</div>
+
+<form class="form panel-form" method="post" action="<%= yeni ? '/admin/isler' : `/admin/isler/${is._id}?_method=PUT` %>" enctype="multipart/form-data" novalidate>
+  <%- include('../partials/form-ozeti', { hatalar, dosyaUyarisi: true }) %>
+
+  <div class="<%= sinif('baslik') %>">
+    <label for="baslik">Başlık</label>
+    <input id="baslik" name="baslik" type="text" required maxlength="80" value="<%= is.baslik || '' %>" placeholder="Örn. Kafe lineer armatür hattı">
+    <%- include('../partials/alan-hatasi', { alan: 'baslik' }) %>
+  </div>
+  <div class="satir">
+    <div class="<%= sinif('kategori') %>">
+      <label for="kategori">Kategori</label>
+      <select id="kategori" name="kategori" required>
+        <% sabitler.IS_KATEGORILERI.forEach((k) => { %><option value="<%= k.value %>"<% if (is.kategori === k.value) { %> selected<% } %>><%= k.label %></option><% }) %>
+      </select>
+      <%- include('../partials/alan-hatasi', { alan: 'kategori' }) %>
+    </div>
+    <div class="<%= sinif('tarih') %>">
+      <label for="tarih">İşin tarihi</label>
+      <input id="tarih" name="tarih" type="date" required value="<%= tarihDeger %>">
+      <%- include('../partials/alan-hatasi', { alan: 'tarih' }) %>
+    </div>
+  </div>
+  <div class="<%= sinif('aciklama') %>">
+    <label for="aciklama">Kısa açıklama <span class="istege-bagli">(isteğe bağlı)</span></label>
+    <textarea id="aciklama" name="aciklama" maxlength="300" style="min-height:90px"><%= is.aciklama || '' %></textarea>
+    <%- include('../partials/alan-hatasi', { alan: 'aciklama' }) %>
+  </div>
+
+  <% if (!yeni && is.fotograflar && is.fotograflar.length) { %>
+    <div class="alan">
+      <span class="etiket">Mevcut fotoğraflar</span>
+      <span class="ipucu">Silmek istediklerinizi işaretleyin. Kaydettiğinizde silinir.</span>
+      <div class="mevcut-fotolar">
+        <% is.fotograflar.forEach((f, i) => { %>
+          <label><img src="<%= f.url %>" alt="Fotoğraf <%= i + 1 %>"><span><input type="checkbox" name="silinecekFotograflar" value="<%= f.url %>"<% if (silinecek.includes(f.url)) { %> checked<% } %>> Sil</span></label>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="<%= sinif('fotograflar') %>">
+    <span class="etiket" id="foto-etiket"><%= yeni ? 'Fotoğraflar' : 'Fotoğraf ekle' %> <span class="istege-bagli">(toplam en fazla 6, ilk fotoğraf kapak olur)</span></span>
+    <div class="dosya-kutu">
+      <input id="fotograflar" name="fotograflar" type="file" accept="image/*,.heic,.heif" multiple data-onizleme="foto-onizleme" data-max="6" data-max-mb="8" aria-labelledby="foto-etiket">
+      <div class="onizleme" id="foto-onizleme"></div>
+    </div>
+    <%- include('../partials/alan-hatasi', { alan: 'fotograflar' }) %>
+  </div>
+
+  <label class="onay"><input type="checkbox" name="oneCikan"<% if (is.oneCikan) { %> checked<% } %>><span>Ana sayfada öne çıkar</span></label>
+
+  <div class="form-alt">
+    <a class="muted" href="/admin/isler">Vazgeç</a>
+    <button class="btn primary" type="submit" data-gonder="Kaydediliyor…"><%= yeni ? 'İşi ekle' : 'Değişiklikleri kaydet' %></button>
+  </div>
+</form>
+
+<%- include('../partials/admin-alt') %>

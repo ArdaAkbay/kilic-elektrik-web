@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= baslik ? `${baslik} | ${isletme.name}` : `${isletme.name} | Bağcılar elektrik tesisatı ve aydınlatma` %></title>
+  <meta name="description" content="<%= typeof aciklama !== 'undefined' ? aciklama : 'Kılıç Elektrik: Bağcılar\'da ev, iş yeri ve projeler için elektrik tesisatı, aydınlatma ve arıza onarımı. Arızanın fotoğrafını gönderin, talebinizi kodla takip edin.' %>">
+  <meta name="theme-color" content="#0f0e0c">
+  <meta property="og:title" content="<%= isletme.name %>">
+  <meta property="og:description" content="Ev ve proje elektrik işleri için talep oluşturun, durumunu takip edin.">
+  <meta property="og:image" content="/img/hero.jpg">
+  <link rel="icon" href="/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
+  <% if (typeof adminSayfasi !== 'undefined' && adminSayfasi) { %><link rel="stylesheet" href="/css/admin.css"><% } %>
+  <script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/img/logo.png" alt="" width="44" height="38"><span>KILIÇ ELEKTRİK</span></a>
+    <% const menu = [['/evim', 'Evim için'], ['/projem', 'Projem için'], ['/isler', 'Yaptığımız işler'], ['/takip', 'Talep takibi']]; %>
+    <nav class="menu" id="menu" aria-label="Ana menü">
+      <% menu.forEach(([href, ad]) => { %>
+        <a href="<%= href %>"<% if (yol.startsWith(href)) { %> aria-current="page"<% } %>><%= ad %></a>
+      <% }) %>
+    </nav>
+    <a class="callbtn" href="tel:+<%= isletme.phoneIntl %>" aria-label="Ara: <%= isletme.phoneDisplay %>"><span class="tam"><%= isletme.phoneDisplay %></span><span class="kisa">Ara</span></a>
+    <button class="menu-btn" type="button" aria-controls="menu" aria-expanded="false" data-menu-btn>Menü</button>
+  </div>
+</header>
+<main id="icerik">
+<% if (bilgi) { %><div class="wrap"><div class="bilgi <%= bilgi.tur %>" role="status"><%= bilgi.metin %></div></div><% } %>

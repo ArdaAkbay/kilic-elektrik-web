@@ -1,0 +1,37 @@
+<%- include('../partials/admin-ust') %>
+
+<div class="panel-bas">
+  <div>
+    <h1>Hizmetler</h1>
+    <p class="alt-baslik">"Evim için" sayfasında ve talep formunda görünen işler. Pasif hizmetler sitede görünmez.</p>
+  </div>
+  <a class="btn primary" href="/admin/hizmetler/yeni">Yeni hizmet</a>
+</div>
+
+<% if (hizmetler.length) { %>
+  <div class="tablo-kap">
+    <table class="tablo">
+      <thead><tr><th>Sıra</th><th>Hizmet</th><th>Açıklama</th><th>Durum</th><th><span class="sr-only">İşlemler</span></th></tr></thead>
+      <tbody>
+        <% hizmetler.forEach((h) => { %>
+          <tr class="<%= h.aktif ? '' : 'pasif' %>">
+            <td class="sayi"><%= h.sira %></td>
+            <td><b><%= h.ad %></b></td>
+            <td class="muted"><%= h.aciklama || '–' %></td>
+            <td><span class="rozet <%= h.aktif ? 'acik' : '' %>"><%= h.aktif ? 'Sitede' : 'Pasif' %></span></td>
+            <td>
+              <div class="islemler">
+                <a class="btn ghost kucuk" href="/admin/hizmetler/<%= h._id %>/duzenle">Düzenle</a>
+                <form method="post" action="/admin/hizmetler/<%= h._id %>?_method=DELETE" data-onay="&quot;<%= h.ad %>&quot; silinsin mi? Bu hizmetle gelmiş eski talepler etkilenmez."><button class="btn tehlike kucuk" type="submit">Sil</button></form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } else { %>
+  <p class="bos">Henüz hizmet yok. "Evim için" sayfası boş görünecek; ilk hizmeti ekleyin.</p>
+<% } %>
+
+<%- include('../partials/admin-alt') %>

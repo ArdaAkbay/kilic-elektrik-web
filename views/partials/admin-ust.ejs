@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title><%= baslik %> | Usta paneli</title>
+  <link rel="icon" href="/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="/js/site.js" defer></script>
+</head>
+<body class="panel">
+<a class="atla" href="#icerik">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/admin"><img src="/img/logo.png" alt="" width="36" height="31"><span>USTA PANELİ</span></a>
+    <% if (girisYapan) { %>
+      <% const menu = [['/admin', 'Talepler', (y) => y === '/admin' || y === '/admin/' || y.startsWith('/admin/talepler')], ['/admin/isler', 'İşler', (y) => y.startsWith('/admin/isler')], ['/admin/hizmetler', 'Hizmetler', (y) => y.startsWith('/admin/hizmetler')]]; %>
+      <nav class="menu" id="menu" aria-label="Panel menüsü">
+        <% menu.forEach(([href, ad, aktif]) => { %><a href="<%= href %>"<% if (aktif(yol)) { %> aria-current="page"<% } %>><%= ad %></a><% }) %>
+        <a href="/" target="_blank">Siteyi aç</a>
+        <form method="post" action="/admin/cikis" class="cikis-form"><button class="link-btn" type="submit">Çıkış (<%= girisYapan %>)</button></form>
+      </nav>
+      <button class="menu-btn" type="button" aria-controls="menu" aria-expanded="false" data-menu-btn>Menü</button>
+    <% } %>
+  </div>
+</header>
+<main id="icerik" class="wrap panel-icerik">
+<% if (bilgi) { %><div class="bilgi <%= bilgi.tur %>" role="status"><%= bilgi.metin %></div><% } %>

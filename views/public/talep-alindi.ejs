@@ -1,0 +1,31 @@
+<%- include('../partials/ust') %>
+
+<div class="wrap dar">
+  <div class="sayfa-bas">
+    <h1>Talebiniz alındı</h1>
+    <p class="giris"><%= ozet.baslik %> talebiniz ustamıza ulaştı. Sizi verdiğiniz numaradan arayacağız.</p>
+  </div>
+
+  <div class="kod-kutu">
+    <span class="muted">Takip kodunuz</span>
+    <span class="kod"><%= ozet.takipKodu %></span>
+    <p class="muted">Bu kodu not alın ya da ekran görüntüsünü kaydedin. Talebinizin hangi aşamada olduğunu bu kodla görebilirsiniz.</p>
+    <div class="actions">
+      <button class="btn ghost kucuk" type="button" data-kopyala="<%= ozet.takipKodu %>">Kodu kopyala</button>
+      <a class="btn ghost kucuk" href="/takip?kod=<%= ozet.takipKodu %>">Durumu görüntüle</a>
+      <a class="btn ghost kucuk" href="<%= waLink(`Merhaba, ${ozet.takipKodu} numaralı talebim hakkında yazıyorum.`) %>" target="_blank" rel="noopener">WhatsApp'tan yaz</a>
+    </div>
+  </div>
+
+  <section aria-labelledby="sonra-baslik">
+    <h2 id="sonra-baslik">Bundan sonra ne olacak?</h2>
+    <ol class="steps" style="margin-top:28px">
+      <li><span class="n">1</span><h3>İnceleme</h3><p>Ustamız açıklamanızı ve dosyalarınızı inceler.</p></li>
+      <li><span class="n">2</span><h3>Arama</h3><p>Sizi arar, keşif için gün belirlenir.</p></li>
+      <li><span class="n">3</span><h3>Teklif</h3><p>Keşiften sonra net fiyat verilir.</p></li>
+      <li><span class="n">4</span><h3>Teslim</h3><p>İş biter, takip sayfanızda "Tamamlandı" görünür.</p></li>
+    </ol>
+  </section>
+</div>
+
+<%- include('../partials/alt') %>

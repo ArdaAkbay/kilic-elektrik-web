@@ -1,0 +1,96 @@
+<%- include('../partials/admin-ust') %>
+<% const t = talep; const telRakam = t.telefon.replace(/\D/g, '').replace(/^0/, '90'); %>
+
+<div class="panel-bas">
+  <div>
+    <p class="muted"><a href="/admin">Talepler</a> / <%= t.takipKodu %></p>
+    <h1><%= t.tur === 'ev' ? t.hizmetAdi : 'Proje: ' + labelOf(sabitler.YAPI_TIPLERI, t.yapiTipi) %></h1>
+    <p class="alt-baslik"><span class="etiket-tur <%= t.tur %>"><%= t.tur === 'ev' ? 'Ev' : 'Proje' %></span> <%= t.takipKodu %> · <%= tarih(t.createdAt, true) %></p>
+  </div>
+  <div class="actions">
+    <a class="btn primary kucuk" href="tel:+<%= telRakam %>">Ara: <%= t.telefon %></a>
+    <a class="btn ghost kucuk" href="https://wa.me/<%= telRakam %>?text=<%= encodeURIComponent(`Merhaba ${t.adSoyad.split(' ')[0]}, ben Kılıç Elektrik'ten yazıyorum. ${t.takipKodu} numaralı talebiniz hakkında.`) %>" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</div>
+
+<div class="detay">
+  <div style="display:grid;gap:20px;min-width:0">
+    <section class="detay-blok" aria-labelledby="aciklama-b">
+      <h2 id="aciklama-b">Müşterinin anlattığı</h2>
+      <p class="aciklama-metni"><%= t.aciklama %></p>
+      <% if (t.fotograflar && t.fotograflar.length) { %>
+        <div class="foto-izgara">
+          <% t.fotograflar.forEach((f, i) => { %><a href="<%= f.url %>" target="_blank" rel="noopener"><img src="<%= f.url %>" alt="Müşteri fotoğrafı <%= i + 1 %>"></a><% }) %>
+        </div>
+      <% } %>
+      <% if (t.projeDosyasi) { %><p><a class="btn ghost kucuk" href="<%= t.projeDosyasi.url %>" target="_blank" rel="noopener">Proje dosyasını aç (<%= t.projeDosyasi.ad || 'PDF' %>)</a></p><% } %>
+    </section>
+
+    <section class="detay-blok" aria-labelledby="bilgiler-b">
+      <h2 id="bilgiler-b">Bilgiler</h2>
+      <dl class="bilgi-listesi">
+        <dt>Ad soyad</dt><dd><%= t.adSoyad %></dd>
+        <% if (t.firma) { %><dt>Firma</dt><dd><%= t.firma %></dd><% } %>
+        <dt>Telefon</dt><dd><a href="tel:+<%= telRakam %>"><%= t.telefon %></a></dd>
+        <% if (t.eposta) { %><dt>E-posta</dt><dd><a href="mailto:<%= t.eposta %>"><%= t.eposta %></a></dd><% } %>
+        <dt>İlçe</dt><dd><%= t.ilce %></dd>
+        <% if (t.adres) { %><dt>Adres</dt><dd><%= t.adres %></dd><% } %>
+        <% if (t.tur === 'ev') { %>
+          <dt>Uygun zaman</dt><dd><%= labelOf(sabitler.UYGUN_ZAMANLAR, t.uygunZaman) %></dd>
+        <% } else { %>
+          <dt>Yapı</dt><dd><%= labelOf(sabitler.YAPI_TIPLERI, t.yapiTipi) %></dd>
+          <dt>Büyüklük</dt><dd><%= t.katSayisi %> kat, <%= Number(t.metrekare).toLocaleString('tr-TR') %> m²<% if (t.daireSayisi) { %>, <%= t.daireSayisi %> daire/birim<% } %></dd>
+          <dt>Kapsam</dt><dd><%= (t.kapsam || []).map((k) => labelOf(sabitler.PROJE_KAPSAMI, k)).join(', ') %></dd>
+        <% } %>
+        <dt>KVKK onayı</dt><dd><%= t.kvkkOnay ? 'Verildi' : 'Yok' %></dd>
+      </dl>
+    </section>
+
+    <section class="detay-blok" id="notlar" aria-labelledby="notlar-b">
+      <h2 id="notlar-b">Usta notları</h2>
+      <p class="muted">Sadece sizin görebileceğiniz notlar: keşif tarihi, verilen fiyat, malzeme listesi gibi.</p>
+      <% if (t.ustaNotlari && t.ustaNotlari.length) { %>
+        <ul class="notlar">
+          <% t.ustaNotlari.slice().reverse().forEach((n) => { %>
+            <li>
+              <span class="aciklama-metni"><%= n.metin %></span>
+              <span class="not-alt">
+                <span><%= tarih(n.tarih, true) %></span>
+                <form method="post" action="/admin/talepler/<%= t._id %>/notlar/<%= n._id %>?_method=DELETE" data-onay="Bu not silinsin mi?"><button class="link-btn" type="submit">Sil</button></form>
+              </span>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+      <form class="form" method="post" action="/admin/talepler/<%= t._id %>/notlar" style="gap:10px">
+        <label class="sr-only" for="metin">Yeni not</label>
+        <textarea id="metin" name="metin" required minlength="2" maxlength="500" placeholder="Örn. Cumartesi 10:00 keşif. 3 priz + 1 kaçak akım rölesi, 6.500 TL teklif verildi." style="min-height:90px"></textarea>
+        <div><button class="btn ghost kucuk" type="submit">Not ekle</button></div>
+      </form>
+    </section>
+  </div>
+
+  <aside class="yan-islemler">
+    <form class="detay-blok form" method="post" action="/admin/talepler/<%= t._id %>/durum?_method=PUT" style="gap:12px">
+      <label for="durum"><h2 style="font-size:1.4rem">Durum</h2></label>
+      <select id="durum" name="durum" data-otomatik-gonder>
+        <% sabitler.DURUMLAR.forEach((d) => { %><option value="<%= d.value %>"<% if (t.durum === d.value) { %> selected<% } %>><%= d.label %></option><% }) %>
+      </select>
+      <noscript><button class="btn primary kucuk" type="submit">Kaydet</button></noscript>
+      <ul class="gecmis" aria-label="Durum geçmişi">
+        <% (t.durumGecmisi || []).slice().reverse().forEach((g) => { %>
+          <li><b><%= labelOf(sabitler.DURUMLAR, g.durum) %></b><span><%= tarih(g.tarih, true) %></span></li>
+        <% }) %>
+      </ul>
+      <a class="muted" href="/takip?kod=<%= t.takipKodu %>" target="_blank">Müşterinin gördüğü sayfayı aç</a>
+    </form>
+
+    <form class="detay-blok" method="post" action="/admin/talepler/<%= t._id %>?_method=DELETE" data-onay="<%= t.takipKodu %> numaralı talep ve tüm dosyaları kalıcı olarak silinecek. Emin misiniz?">
+      <h2 style="font-size:1.4rem">Talebi sil</h2>
+      <p class="muted">Talep, fotoğrafları ve dosyaları kalıcı olarak silinir. Müşteri takip kodu artık çalışmaz.</p>
+      <button class="btn tehlike kucuk" type="submit">Kalıcı olarak sil</button>
+    </form>
+  </aside>
+</div>
+
+<%- include('../partials/admin-alt') %>

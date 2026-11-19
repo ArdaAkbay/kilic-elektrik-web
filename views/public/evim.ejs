@@ -1,0 +1,34 @@
+<%- include('../partials/ust') %>
+
+<div class="wrap">
+  <div class="sayfa-bas">
+    <p class="yol"><a href="/">Ana sayfa</a> / Evim için</p>
+    <h1>Evim için</h1>
+    <p class="giris">Evde ve iş yerinde yaptığımız işler aşağıda. Hizmeti seçin, arızanın ya da yerin fotoğrafını gönderin; ustamız inceleyip sizi arasın. Fiyatı keşiften sonra, iş başlamadan önce söyleriz.</p>
+  </div>
+</div>
+<div class="wall ince" role="presentation"></div>
+
+<section aria-label="Hizmetler">
+  <div class="wrap">
+    <% if (hizmetler.length) { %>
+      <ul class="hizmetler">
+        <% hizmetler.forEach((h) => { %>
+          <li class="hizmet">
+            <h3><%= h.ad %></h3>
+            <% if (h.aciklama) { %><p><%= h.aciklama %></p><% } %>
+            <a class="btn ghost kucuk" href="/evim/talep?hizmet=<%= encodeURIComponent(h.slug) %>">Bu iş için talep oluştur</a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="bos">Hizmet listesi şu an güncelleniyor. İşinizi anlatmak için bizi arayın: <%= isletme.phoneDisplay %></p>
+    <% } %>
+    <div class="actions" style="margin-top:36px">
+      <a class="btn primary" href="/evim/talep">Talep oluştur</a>
+      <span class="muted">İşiniz listede yoksa "Arıza tespiti" seçip anlatın.</span>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>

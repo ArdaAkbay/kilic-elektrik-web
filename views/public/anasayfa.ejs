@@ -1,0 +1,113 @@
+<%- include('../partials/ust') %>
+
+<div class="hero">
+  <img class="bg" src="/img/hero.jpg" alt="Kılıç Elektrik ustası, montajını yaptığı sarı LED aydınlatmalı panel duvarın önünde" width="1360" height="1020" fetchpriority="high">
+  <div class="copy">
+    <div class="wrap">
+      <div class="inner">
+        <h1>Işık da tesisat da <em>usta işi</em> olmalı.</h1>
+        <p class="lead">Bağcılar'da ev, iş yeri ve projeler için elektrik tesisatı, aydınlatma ve arıza onarımı. Arızanın fotoğrafını gönderin, ustamız inceleyip sizi arasın, talebinizi kodla takip edin.</p>
+        <div class="actions">
+          <a class="btn primary" href="/evim">Evim için talep oluştur</a>
+          <a class="btn ghost" href="/projem">Projem için görüşelim</a>
+        </div>
+        <a class="rating" href="<%= isletme.mapsUrl %>" target="_blank" rel="noopener">
+          <span class="stars" aria-hidden="true">★★★★★</span><span><b><%= isletme.googleRating %></b> Google puanı, <%= isletme.googleReviews %> yorum</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wall yan" role="presentation"></div>
+
+<section aria-labelledby="kapilar-baslik">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="kapilar-baslik">Size nasıl yardımcı olalım?</h2>
+      <p>Bir prizle bir binanın tesisatı aynı şekilde konuşulmaz. İşinize uygun kapıyı seçin, gerisini ona göre soralım.</p>
+    </div>
+    <div class="kapilar">
+      <a class="kapi" href="/evim">
+        <svg class="ikon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 22 24 7l18 15"/><path d="M11 18v23h26V18"/><path d="M25 22l-5 9h7l-5 9"/></svg>
+        <h3>Evim için</h3>
+        <p>Evde veya dükkânınızda tek seferlik bir iş, bir arıza ya da yenileme.</p>
+        <ul>
+          <li>Yaptığımız işler arasından seçin</li>
+          <li>Arızanın fotoğrafını çekip gönderin</li>
+          <li>Size uygun zamanı seçin</li>
+        </ul>
+        <span class="git">Hizmetleri gör</span>
+      </a>
+      <a class="kapi" href="/projem">
+        <svg class="ikon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M8 42V12l14-6v36"/><path d="M22 16h18v26"/><path d="M4 42h40"/><path d="M13 16h4M13 23h4M13 30h4M28 23h6M28 30h6"/></svg>
+        <h3>Projem için</h3>
+        <p>İnşaat, bina tesisatı, mağaza veya fabrika. Fiyat projeye göre keşiften sonra verilir.</p>
+        <ul>
+          <li>Yapı tipi, kat sayısı ve alanı bildirin</li>
+          <li>Varsa proje çiziminizi PDF olarak ekleyin</li>
+          <li>Ustamız sizi arayıp görüşme ayarlasın</li>
+        </ul>
+        <span class="git">Proje görüşmesi talep et</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="koyu" aria-labelledby="isler-baslik">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="isler-baslik">Yaptığımız işlerden</h2>
+      <p>Buradaki fotoğrafların hepsi kendi işlerimizden. Stok görsel kullanmıyoruz.</p>
+    </div>
+    <% if (oneCikanlar.length) { %>
+      <div class="grid">
+        <% oneCikanlar.forEach((is) => { %>
+          <figure>
+            <img src="<%= is.fotograflar[0] && is.fotograflar[0].url %>" alt="<%= is.baslik %>" loading="lazy">
+            <figcaption><b><%= is.baslik %></b><span><%= is.aciklama %></span></figcaption>
+          </figure>
+        <% }) %>
+      </div>
+    <% } %>
+    <p class="actions" style="margin-top:24px"><a class="btn ghost" href="/isler">Tüm işleri gör</a></p>
+  </div>
+</section>
+
+<section aria-labelledby="surec-baslik">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="surec-baslik">Nasıl çalışırız</h2>
+      <p>Talebinizi bıraktığınız anda size bir takip kodu veririz. Her adımı o kodla görebilirsiniz.</p>
+    </div>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>Talep bırakın</h3><p>Ev işiyse fotoğraf, projeyse yapı bilgisi. İki dakika sürer.</p></li>
+      <li><span class="n">2</span><h3>Sizi arayalım</h3><p>Ustamız talebi inceler, sizi arar ve keşif gününü birlikte belirleriz.</p></li>
+      <li><span class="n">3</span><h3>Net teklif</h3><p>Malzeme ve işçiliği açıkça gösteren bir fiyat veririz.</p></li>
+      <li><span class="n">4</span><h3>Montaj ve teslim</h3><p>İşi temiz bitirir, her hattı test eder, çalışır halde teslim ederiz.</p></li>
+    </ol>
+  </div>
+</section>
+
+<div class="wall" role="presentation"></div>
+
+<section class="koyu" id="iletisim" aria-labelledby="iletisim-baslik">
+  <div class="wrap contact">
+    <div>
+      <h2 id="iletisim-baslik">Bize ulaşın</h2>
+      <dl>
+        <div><dt>Telefon</dt><dd><span class="phone"><%= isletme.phoneDisplay %></span><br><button class="copy-btn" type="button" data-kopyala="<%= isletme.phoneDisplay.replace(/\s/g, '') %>">Numarayı kopyala</button></dd></div>
+        <div><dt>Adres</dt><dd><%= isletme.address %></dd></div>
+        <div><dt>Çalışma saati</dt><dd><%= isletme.hours %></dd></div>
+        <div><dt>Yol tarifi</dt><dd><a href="<%= isletme.mapsUrl %>" target="_blank" rel="noopener">Google Haritalar'da aç</a></dd></div>
+        <div><dt>Talep takibi</dt><dd><a href="/takip">Takip kodunuzla durumunu görün</a></dd></div>
+      </dl>
+    </div>
+    <div class="shop">
+      <img src="/img/dukkan.jpg" alt="Kılıç Elektrik dükkânının dışarıdan görünümü" loading="lazy" width="282" height="282">
+      <p>Velioğlu Caddesi üzerindeki dükkânımız. Malzeme almak ya da işinizi konuşmak için uğrayabilirsiniz.</p>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>
