@@ -14,7 +14,6 @@
   "license": "UNLICENSED",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "cloudinary": "^2.11.0",
     "compression": "^1.8.2",
     "connect-mongo": "^6.0.0",
     "dotenv": "^18.0.10",
@@ -27,6 +26,7 @@
     "method-override": "^3.0.0",
     "mongodb": "^7.8.0",
     "mongoose": "^9.12.2",
-    "multer": "^2.5.0"
+    "multer": "^2.5.0",
+    "sharp": "^0.35.5"
   }
 }

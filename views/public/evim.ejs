@@ -1,32 +1,33 @@
 <%- include('../partials/ust') %>
 
-<div class="wrap">
-  <div class="sayfa-bas">
+<div class="sayfa-bas">
+  <div class="wrap">
     <p class="yol"><a href="/">Ana sayfa</a> / Evim için</p>
     <h1>Evim için</h1>
-    <p class="giris">Evde ve iş yerinde yaptığımız işler aşağıda. Hizmeti seçin, arızanın ya da yerin fotoğrafını gönderin; ustamız inceleyip sizi arasın. Fiyatı keşiften sonra, iş başlamadan önce söyleriz.</p>
+    <p class="giris">Evde ve küçük iş yerlerinde yaptığımız işler aşağıda. Hizmeti seçin, arızanın ya da yerin fotoğrafını gönderin; ustamız inceleyip sizi arasın.</p>
   </div>
 </div>
-<div class="wall ince" role="presentation"></div>
+<div class="tava ince" role="presentation"></div>
 
-<section aria-label="Hizmetler">
+<section style="padding-top:36px">
   <div class="wrap">
+    <p class="not-kutu">Fiyatı keşiften sonra, iş başlamadan önce söyleriz. Sürpriz ücret çıkmaz.</p>
     <% if (hizmetler.length) { %>
-      <ul class="hizmetler">
+      <ul class="liste">
         <% hizmetler.forEach((h) => { %>
-          <li class="hizmet">
+          <li>
             <h3><%= h.ad %></h3>
-            <% if (h.aciklama) { %><p><%= h.aciklama %></p><% } %>
-            <a class="btn ghost kucuk" href="/evim/talep?hizmet=<%= encodeURIComponent(h.slug) %>">Bu iş için talep oluştur</a>
+            <% if (h.kisaAciklama) { %><p><%= h.kisaAciklama %></p><% } %>
+            <a class="btn cerceve kucuk" href="/evim/talep?hizmet=<%= encodeURIComponent(h.slug) %>">Talep oluştur</a>
           </li>
         <% }) %>
       </ul>
     <% } else { %>
-      <p class="bos">Hizmet listesi şu an güncelleniyor. İşinizi anlatmak için bizi arayın: <%= isletme.phoneDisplay %></p>
+      <div class="bos"><h3>Hizmet listesi güncelleniyor</h3><p>İşinizi anlatmak için bizi arayın: <%= isletme.phoneDisplay %></p></div>
     <% } %>
-    <div class="actions" style="margin-top:36px">
-      <a class="btn primary" href="/evim/talep">Talep oluştur</a>
-      <span class="muted">İşiniz listede yoksa "Arıza tespiti" seçip anlatın.</span>
+    <div class="eylemler" style="margin-top:36px">
+      <a class="btn birincil" href="/evim/talep">Ev talebi oluştur</a>
+      <span class="ikincil">İşiniz listede yoksa "Arıza tespiti ve onarım"ı seçip anlatın.</span>
     </div>
   </div>
 </section>

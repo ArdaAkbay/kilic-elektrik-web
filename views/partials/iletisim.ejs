@@ -1,0 +1,22 @@
+<section class="koyu" id="iletisim" aria-labelledby="iletisim-baslik">
+  <div class="wrap iletisim">
+    <div style="display:grid;gap:18px;align-content:start">
+      <h2 id="iletisim-baslik">Bize ulaşın</h2>
+      <p style="color:#c3cad6;max-width:44ch">Projenizi telefonda anlatabilir, WhatsApp'tan fotoğraf gönderebilir ya da talep formunu doldurabilirsiniz.</p>
+      <div>
+        <a class="buyuk-tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a><br>
+        <button class="kopyala-btn" type="button" data-kopyala="<%= isletme.phoneDisplay.replace(/\s/g, '') %>">Numarayı kopyala</button>
+      </div>
+      <div class="eylemler">
+        <a class="btn birincil" href="/projem">Proje görüşmesi talep et</a>
+        <a class="btn acik-cerceve" href="<%= waLink('Merhaba, Kılıç Elektrik sitesinden yazıyorum.') %>" target="_blank" rel="noopener">WhatsApp'tan yaz</a>
+      </div>
+    </div>
+    <dl>
+      <div><dt>Adres</dt><dd><%= isletme.address %></dd></div>
+      <div><dt>Çalışma saati</dt><dd><%= isletme.hours %></dd></div>
+      <div><dt>Yol tarifi</dt><dd><a href="<%= isletme.mapsUrl %>" target="_blank" rel="noopener">Google Haritalar'da aç</a></dd></div>
+      <div><dt>Talep takibi</dt><dd><a href="/takip">Takip kodunuzla durumunu görün</a></dd></div>
+    </dl>
+  </div>
+</section>

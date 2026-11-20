@@ -1,0 +1,19 @@
+<%# Google'ın işletmeyi tanıması için yapılandırılmış veri (schema.org). Script değil, sadece veri; CSP'ye takılmaz. %>
+<script type="application/ld+json"><%- JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Electrician',
+  name: isletme.name,
+  url: siteAdresi,
+  telephone: '+' + isletme.phoneIntl,
+  image: siteAdresi + '/img/hizmetler/yuksek-tavan-aydinlatma.jpg',
+  logo: siteAdresi + '/img/logo-koyu.png',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Demirkapı Mah. Velioğlu Cd. No: 115/D',
+    addressLocality: 'Bağcılar',
+    addressRegion: 'İstanbul',
+    postalCode: '34218',
+    addressCountry: 'TR',
+  },
+  areaServed: 'İstanbul',
+}).replace(/</g, '\\u003c') %></script>

@@ -35,6 +35,12 @@ const UYGUN_ZAMANLAR = [
   { value: 'farketmez', label: 'Fark etmez' },
 ];
 
+const HIZMET_GRUPLARI = [
+  { value: 'aydinlatma', label: 'Aydınlatma' },
+  { value: 'tesisat', label: 'Tesisat ve altyapı' },
+  { value: 'kontrol', label: 'Kontrol ve güvenlik' },
+];
+
 const IS_KATEGORILERI = [
   { value: 'ev', label: 'Ev' },
   { value: 'ticari', label: 'Ticari' },
@@ -50,6 +56,7 @@ module.exports = {
   PROJE_KAPSAMI,
   UYGUN_ZAMANLAR,
   IS_KATEGORILERI,
+  HIZMET_GRUPLARI,
   values,
   labelOf,
 };

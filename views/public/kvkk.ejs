@@ -1,12 +1,14 @@
 <%- include('../partials/ust') %>
 
-<div class="wrap dar">
-  <div class="sayfa-bas">
-    <p class="yol"><a href="/">Ana sayfa</a> / KVKK</p>
+<div class="sayfa-bas">
+  <div class="wrap dar">
+    <p class="yol"><a href="/">Ana sayfa</a> / KVKK ve çerezler</p>
     <h1>Kişisel verilerin korunması</h1>
-    <p class="giris">6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni.</p>
+    <p class="giris">6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni ve çerez politikası.</p>
   </div>
-  <div class="metin" style="padding-bottom:72px">
+</div>
+<div class="wrap dar">
+  <div class="metin" style="padding-block:24px 72px">
     <h2>Veri sorumlusu</h2>
     <p><%= isletme.name %>, <%= isletme.address %>. Telefon: <%= isletme.phoneDisplay %></p>
 
@@ -21,13 +23,22 @@
     <p>Yalnızca talebinizi değerlendirmek, sizinle iletişime geçmek, keşif ve teklif süreçlerini yürütmek için. Verileriniz reklam amacıyla kullanılmaz ve üçüncü kişilere satılmaz.</p>
 
     <h2>Nerede saklanıyor?</h2>
-    <p>Bilgileriniz şifreli bağlantı üzerinden alınır ve barındırma hizmeti sağlayıcılarımızın sunucularında saklanır. Bu sağlayıcıların sunucuları yurt dışında bulunabilir. Talebinize yalnızca <%= isletme.name %> yetkilisi şifreyle korunan panelden erişebilir.</p>
+    <p>Bilgileriniz şifreli bağlantı üzerinden alınır ve barındırma hizmeti sağlayıcılarımızın sunucularında saklanır. Veritabanı sunucusu yurt dışında (Almanya, Frankfurt) bulunmaktadır. Talebinize ve yüklediğiniz fotoğraflara yalnızca <%= isletme.name %> yetkilisi şifreyle korunan panelden erişebilir; bu dosyalar sitede herkese açık gösterilmez.</p>
 
     <h2>Ne kadar süre saklıyoruz?</h2>
     <p>İş tamamlandıktan veya talep kapatıldıktan sonra, yasal yükümlülükler için gereken süre dışında verileriniz silinir. Talebinizin daha önce silinmesini istiyorsanız bizi arayabilirsiniz.</p>
 
     <h2>Haklarınız</h2>
     <p>Kanunun 11. maddesi uyarınca verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini isteme ve itiraz etme haklarına sahipsiniz. Başvurularınızı dükkânımıza bizzat ya da telefonla iletebilirsiniz.</p>
+
+    <h2 id="cerezler">Çerezler</h2>
+    <p>Sitemiz çalışmak için yalnızca zorunlu çerezleri kullanır: usta panelinde oturumun açık kalması ve çerez tercihinizin hatırlanması için.</p>
+    <% if (reklam.id) { %>
+      <p>Bunlara ek olarak, <b>yalnızca onay vermeniz hâlinde</b>, Google Ads reklamlarımızın işe yarayıp yaramadığını ölçmek için Google çerezleri kullanılır. Bu çerezler; reklama tıklayan bir ziyaretçinin talep gönderip göndermediğini, arama veya WhatsApp düğmesine basıp basmadığını Google'a bildirir. Adınız, telefonunuz veya talebinizin içeriği Google'a gönderilmez.</p>
+      <p>Onay vermezseniz Google kodu hiç yüklenmez. Tercihinizi istediğiniz zaman değiştirebilirsiniz: <button class="link-btn" type="button" data-cerez-ayar>çerez tercihlerini aç</button>.</p>
+    <% } else { %>
+      <p>Şu an reklam veya istatistik çerezi kullanılmamaktadır. İleride kullanılırsa bu sayfa güncellenecek ve çerezler yalnızca onayınızla çalışacaktır.</p>
+    <% } %>
   </div>
 </div>
 

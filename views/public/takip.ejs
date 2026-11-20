@@ -1,16 +1,18 @@
 <%- include('../partials/ust') %>
 
-<div class="wrap dar">
-  <div class="sayfa-bas">
+<div class="sayfa-bas">
+  <div class="wrap dar">
     <p class="yol"><a href="/">Ana sayfa</a> / Talep takibi</p>
     <h1>Talebiniz ne durumda?</h1>
     <p class="giris">Talep oluşturduğunuzda verilen kodu yazın. Bu sayfada kişisel bilgileriniz gösterilmez, yalnızca talebin aşaması görünür.</p>
   </div>
+</div>
+<div class="wrap dar" style="padding-block:36px 80px">
 
   <form class="takip-form" method="get" action="/takip" role="search">
     <label class="sr-only" for="kod">Takip kodu</label>
     <input id="kod" name="kod" type="text" placeholder="KE-2026-0001" value="<%= kod %>" autocomplete="off" required pattern="[Kk][Ee]-\d{4}-\d{4,}" title="KE-2026-0001 biçiminde">
-    <button class="btn primary" type="submit">Sorgula</button>
+    <button class="btn koyu" type="submit">Sorgula</button>
   </form>
   <% if (hata) { %><p class="hata-mesaj" role="alert" style="margin-top:12px"><%= hata %></p><% } %>
 
@@ -19,9 +21,9 @@
        const asamalar = sabitler.DURUMLAR.filter((d) => d.value !== 'iptal');
        const gecmis = {}; ozet.durumGecmisi.forEach((g) => { gecmis[g.durum] = g.tarih; });
        const simdikiSira = asamalar.findIndex((a) => a.value === ozet.durum); %>
-    <section aria-labelledby="sonuc-baslik">
+    <section aria-labelledby="sonuc-baslik" style="padding-block:32px 0">
       <div class="kod-kutu" style="margin-bottom:32px">
-        <span class="muted"><%= ozet.tur === 'ev' ? 'Ev talebi' : 'Proje talebi' %> · <%= tarih(ozet.olusturma) %></span>
+        <span class="ikincil"><%= ozet.tur === 'ev' ? 'Ev talebi' : 'Proje talebi' %> · <%= tarih(ozet.olusturma) %></span>
         <span class="kod" id="sonuc-baslik"><%= ozet.takipKodu %></span>
         <p><b><%= ozet.baslik %></b></p>
       </div>
@@ -49,7 +51,7 @@
           </li>
         <% } %>
       </ol>
-      <p class="muted">Sorunuz mu var? <a href="<%= waLink(`Merhaba, ${ozet.takipKodu} numaralı talebim hakkında yazıyorum.`) %>" target="_blank" rel="noopener">WhatsApp'tan yazın</a> ya da arayın: <%= isletme.phoneDisplay %></p>
+      <p class="ikincil">Sorunuz mu var? <a class="metin-link" href="<%= waLink(`Merhaba, ${ozet.takipKodu} numaralı talebim hakkında yazıyorum.`) %>" target="_blank" rel="noopener">WhatsApp'tan yazın</a> ya da arayın: <%= isletme.phoneDisplay %></p>
     </section>
   <% } %>
 </div>

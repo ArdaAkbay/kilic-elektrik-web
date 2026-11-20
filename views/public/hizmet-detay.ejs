@@ -1,0 +1,46 @@
+<%- include('../partials/ust') %>
+<% const h = hizmet; %>
+
+<div class="sayfa-bas">
+  <div class="wrap">
+    <p class="yol"><a href="/">Ana sayfa</a> / <a href="/hizmetler">Hizmetlerimiz</a><% if (h.grup) { %> / <a href="/hizmetler?grup=<%= h.grup %>"><%= labelOf(sabitler.HIZMET_GRUPLARI, h.grup) %></a><% } %></p>
+  </div>
+</div>
+
+<section style="padding-top:clamp(28px,4vw,48px)">
+  <div class="wrap detay-ust">
+    <figure>
+      <% if (h.gorsel && h.gorsel.url) { %><img src="<%= h.gorsel.url %>" alt="<%= h.ad %>" fetchpriority="high"><% } %>
+    </figure>
+    <div class="detay-metin">
+      <h1><%= h.ad %></h1>
+      <% if (h.kisaAciklama) { %><p class="ozet"><%= h.kisaAciklama %></p><% } %>
+      <% if (h.aciklama) { %><p class="uzun"><%= h.aciklama %></p><% } %>
+      <div class="cta-kutu">
+        <h2>Bu iş için görüşelim</h2>
+        <p>Yapınızı ve ihtiyacınızı kısaca anlatın. Ustamız sizi arayıp keşif için gün belirlesin. Fiyat keşiften sonra verilir.</p>
+        <div class="eylemler">
+          <a class="btn birincil" href="/projem?hizmet=<%= encodeURIComponent(h.slug) %>">Görüşme talep et</a>
+          <a class="btn cerceve" href="<%= waLink(`Merhaba, "${h.ad}" hizmeti hakkında bilgi almak istiyorum.`) %>" target="_blank" rel="noopener">WhatsApp'tan sor</a>
+        </div>
+        <a class="tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (digerleri.length) { %>
+<section class="kagit" aria-labelledby="diger-baslik">
+  <div class="wrap">
+    <div class="bas">
+      <h2 id="diger-baslik">Benzer hizmetler</h2>
+      <p class="sag"><a class="metin-link ok" href="/hizmetler">Tüm hizmetler</a></p>
+    </div>
+    <div class="kartlar">
+      <% digerleri.forEach((d) => { %><%- include('../partials/hizmet-karti', { h: d }) %><% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<%- include('../partials/alt') %>

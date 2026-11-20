@@ -1,0 +1,10 @@
+<a class="kart" href="/hizmetler/<%= h.slug %>">
+  <div class="foto">
+    <% if (h.gorsel && h.gorsel.url) { %><img src="<%= h.gorsel.kucukUrl || h.gorsel.url %>" alt="<%= h.ad %>" loading="lazy" width="640" height="480"><% } %>
+  </div>
+  <div class="govde">
+    <% if (typeof grupGoster !== 'undefined' && grupGoster && h.grup) { %><span class="grup"><%= labelOf(sabitler.HIZMET_GRUPLARI, h.grup) %></span><% } %>
+    <h3><%= h.ad %></h3>
+    <% if (h.kisaAciklama) { %><p><%= h.kisaAciklama %></p><% } %>
+  </div>
+</a>

@@ -5,6 +5,6 @@
   <ul>
     <% hataListesi.forEach(([alan, mesaj]) => { %><li><a href="#<%= alan %>"><%= mesaj %></a></li><% }) %>
   </ul>
-  <% if (typeof dosyaUyarisi !== 'undefined' && dosyaUyarisi) { %><p class="muted">Güvenlik nedeniyle seçtiğiniz dosyaları yeniden seçmeniz gerekiyor.</p><% } %>
+  <% if (typeof dosyaUyarisi !== 'undefined' && dosyaUyarisi) { %><p>Güvenlik nedeniyle seçtiğiniz dosyaları yeniden seçmeniz gerekiyor.</p><% } %>
 </div>
 <% } %>

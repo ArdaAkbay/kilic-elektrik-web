@@ -1,0 +1,38 @@
+<%- include('../partials/ust') %>
+
+<div class="sayfa-bas">
+  <div class="wrap">
+    <p class="yol"><a href="/">Ana sayfa</a> / Hizmetlerimiz</p>
+    <h1>Hizmetlerimiz</h1>
+    <p class="giris">Üretim alanları, depolar, mağazalar ve şantiyeler için yaptığımız işler. Bir hizmeti açıp ayrıntılarını görebilir, o iş için doğrudan görüşme talep edebilirsiniz.</p>
+  </div>
+</div>
+<div class="tava ince" role="presentation"></div>
+
+<section style="padding-top:36px">
+  <div class="wrap">
+    <nav class="filtre" aria-label="Hizmet grubuna göre filtrele">
+      <a href="/hizmetler" aria-current="<%= !grup %>">Tümü</a>
+      <% sabitler.HIZMET_GRUPLARI.forEach((g) => { %>
+        <a href="/hizmetler?grup=<%= g.value %>" aria-current="<%= grup === g.value %>"><%= g.label %></a>
+      <% }) %>
+    </nav>
+    <% if (hizmetler.length) { %>
+      <div class="kartlar">
+        <% hizmetler.forEach((h) => { %><%- include('../partials/hizmet-karti', { h, grupGoster: !grup }) %><% }) %>
+      </div>
+    <% } else { %>
+      <div class="bos"><h3>Bu grupta henüz hizmet yok</h3><a class="metin-link" href="/hizmetler">Tüm hizmetlere dön</a></div>
+    <% } %>
+    <div class="cta-kutu" style="margin-top:44px">
+      <h2>Aradığınız iş listede yok mu?</h2>
+      <p>Listede olmayan bir iş için de bize ulaşabilirsiniz. Projenizi kısaca anlatın, yapabileceğimiz bir işse sizi arayalım.</p>
+      <div class="eylemler">
+        <a class="btn birincil" href="/projem">Proje görüşmesi talep et</a>
+        <a class="btn cerceve" href="/evim">Ev ve küçük işler</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/alt') %>

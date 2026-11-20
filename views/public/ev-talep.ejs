@@ -1,16 +1,16 @@
 <%- include('../partials/ust') %>
 <% const d = degerler; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan'; const aria = (a) => hatalar[a] ? `aria-invalid="true" aria-describedby="${a}-hata"` : ''; %>
 
-<div class="wrap">
-  <div class="sayfa-bas">
+<div class="sayfa-bas">
+  <div class="wrap">
     <p class="yol"><a href="/">Ana sayfa</a> / <a href="/evim">Evim için</a> / Talep</p>
     <h1>Ev talebi oluştur</h1>
     <p class="giris">Ne kadar net anlatırsanız ustamız o kadar hazırlıklı gelir. Bir fotoğraf çoğu zaman uzun bir açıklamadan daha çok şey söyler.</p>
   </div>
 </div>
-<div class="wall ince" role="presentation"></div>
+<div class="tava ince" role="presentation"></div>
 
-<section>
+<section style="padding-top:40px">
   <div class="wrap yan-yana">
     <form class="form" method="post" action="/evim/talep" enctype="multipart/form-data" novalidate>
       <%- include('../partials/form-ozeti', { hatalar, dosyaUyarisi: true }) %>
@@ -38,8 +38,8 @@
         <div class="<%= sinif('fotograflar') %>">
           <span class="etiket" id="foto-etiket">Fotoğraf <span class="istege-bagli">(isteğe bağlı, en fazla 3)</span></span>
           <div class="dosya-kutu">
-            <input id="fotograflar" name="fotograflar" type="file" accept="image/*,.heic,.heif" multiple data-onizleme="foto-onizleme" data-max="3" data-max-mb="5" aria-labelledby="foto-etiket" <%- aria('fotograflar') %>>
-            <span class="ipucu">Arızalı priz, sigorta kutusu ya da ışık takılacak yer. Her biri en fazla 5 MB.</span>
+            <input id="fotograflar" name="fotograflar" type="file" accept="image/jpeg,image/png,image/webp" multiple data-onizleme="foto-onizleme" data-max="3" data-max-mb="5" aria-labelledby="foto-etiket" <%- aria('fotograflar') %>>
+            <span class="ipucu">Arızalı priz, sigorta kutusu ya da ışık takılacak yer. Her biri en fazla 5 MB. Telefonla çektiğiniz fotoğrafı doğrudan seçebilirsiniz.</span>
             <div class="onizleme" id="foto-onizleme"></div>
           </div>
           <%- include('../partials/alan-hatasi', { alan: 'fotograflar' }) %>
@@ -90,7 +90,7 @@
 
       <div class="form-alt">
         <p>Gönderince size bir takip kodu vereceğiz. Ustamız talebinizi inceleyip sizi arar.</p>
-        <button class="btn primary" type="submit" data-gonder="Gönderiliyor…">Talebi gönder</button>
+        <button class="btn birincil" type="submit" data-gonder="Gönderiliyor…">Talebi gönder</button>
       </div>
     </form>
 
@@ -101,7 +101,7 @@
         <li>Ustamız fotoğrafları inceler ve sizi arar.</li>
         <li>Keşif günü belirlenir, net fiyat verilir.</li>
       </ol>
-      <p class="muted">Acil bir durum mu? Arayın:</p>
+      <p>Acil bir durum mu? Arayın:</p>
       <a class="tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a>
     </aside>
   </div>

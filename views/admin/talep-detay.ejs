@@ -3,13 +3,13 @@
 
 <div class="panel-bas">
   <div>
-    <p class="muted"><a href="/admin">Talepler</a> / <%= t.takipKodu %></p>
-    <h1><%= t.tur === 'ev' ? t.hizmetAdi : 'Proje: ' + labelOf(sabitler.YAPI_TIPLERI, t.yapiTipi) %></h1>
+    <p class="ikincil"><a href="/admin">Talepler</a> / <%= t.takipKodu %></p>
+    <h1><%= t.tur === 'ev' ? t.hizmetAdi : 'Proje: ' + (t.hizmetAdi || labelOf(sabitler.YAPI_TIPLERI, t.yapiTipi)) %></h1>
     <p class="alt-baslik"><span class="etiket-tur <%= t.tur %>"><%= t.tur === 'ev' ? 'Ev' : 'Proje' %></span> <%= t.takipKodu %> · <%= tarih(t.createdAt, true) %></p>
   </div>
   <div class="actions">
-    <a class="btn primary kucuk" href="tel:+<%= telRakam %>">Ara: <%= t.telefon %></a>
-    <a class="btn ghost kucuk" href="https://wa.me/<%= telRakam %>?text=<%= encodeURIComponent(`Merhaba ${t.adSoyad.split(' ')[0]}, ben Kılıç Elektrik'ten yazıyorum. ${t.takipKodu} numaralı talebiniz hakkında.`) %>" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn birincil kucuk" href="tel:+<%= telRakam %>">Ara: <%= t.telefon %></a>
+    <a class="btn cerceve kucuk" href="https://wa.me/<%= telRakam %>?text=<%= encodeURIComponent(`Merhaba ${t.adSoyad.split(' ')[0]}, ben Kılıç Elektrik'ten yazıyorum. ${t.takipKodu} numaralı talebiniz hakkında.`) %>" target="_blank" rel="noopener">WhatsApp</a>
   </div>
 </div>
 
@@ -20,10 +20,10 @@
       <p class="aciklama-metni"><%= t.aciklama %></p>
       <% if (t.fotograflar && t.fotograflar.length) { %>
         <div class="foto-izgara">
-          <% t.fotograflar.forEach((f, i) => { %><a href="<%= f.url %>" target="_blank" rel="noopener"><img src="<%= f.url %>" alt="Müşteri fotoğrafı <%= i + 1 %>"></a><% }) %>
+          <% t.fotograflar.forEach((f, i) => { %><a href="<%= f.url %>" target="_blank" rel="noopener"><img src="<%= f.url.startsWith('/dosya/') ? f.url + '?boyut=kucuk' : f.url %>" alt="Müşteri fotoğrafı <%= i + 1 %>"></a><% }) %>
         </div>
       <% } %>
-      <% if (t.projeDosyasi) { %><p><a class="btn ghost kucuk" href="<%= t.projeDosyasi.url %>" target="_blank" rel="noopener">Proje dosyasını aç (<%= t.projeDosyasi.ad || 'PDF' %>)</a></p><% } %>
+      <% if (t.projeDosyasi) { %><p><a class="btn cerceve kucuk" href="<%= t.projeDosyasi.url %>" target="_blank" rel="noopener">Proje dosyasını aç (<%= t.projeDosyasi.ad || 'PDF' %>)</a></p><% } %>
     </section>
 
     <section class="detay-blok" aria-labelledby="bilgiler-b">
@@ -48,7 +48,7 @@
 
     <section class="detay-blok" id="notlar" aria-labelledby="notlar-b">
       <h2 id="notlar-b">Usta notları</h2>
-      <p class="muted">Sadece sizin görebileceğiniz notlar: keşif tarihi, verilen fiyat, malzeme listesi gibi.</p>
+      <p class="ikincil">Sadece sizin görebileceğiniz notlar: keşif tarihi, verilen fiyat, malzeme listesi gibi.</p>
       <% if (t.ustaNotlari && t.ustaNotlari.length) { %>
         <ul class="notlar">
           <% t.ustaNotlari.slice().reverse().forEach((n) => { %>
@@ -65,7 +65,7 @@
       <form class="form" method="post" action="/admin/talepler/<%= t._id %>/notlar" style="gap:10px">
         <label class="sr-only" for="metin">Yeni not</label>
         <textarea id="metin" name="metin" required minlength="2" maxlength="500" placeholder="Örn. Cumartesi 10:00 keşif. 3 priz + 1 kaçak akım rölesi, 6.500 TL teklif verildi." style="min-height:90px"></textarea>
-        <div><button class="btn ghost kucuk" type="submit">Not ekle</button></div>
+        <div><button class="btn cerceve kucuk" type="submit">Not ekle</button></div>
       </form>
     </section>
   </div>
@@ -76,18 +76,18 @@
       <select id="durum" name="durum" data-otomatik-gonder>
         <% sabitler.DURUMLAR.forEach((d) => { %><option value="<%= d.value %>"<% if (t.durum === d.value) { %> selected<% } %>><%= d.label %></option><% }) %>
       </select>
-      <noscript><button class="btn primary kucuk" type="submit">Kaydet</button></noscript>
+      <noscript><button class="btn birincil kucuk" type="submit">Kaydet</button></noscript>
       <ul class="gecmis" aria-label="Durum geçmişi">
         <% (t.durumGecmisi || []).slice().reverse().forEach((g) => { %>
           <li><b><%= labelOf(sabitler.DURUMLAR, g.durum) %></b><span><%= tarih(g.tarih, true) %></span></li>
         <% }) %>
       </ul>
-      <a class="muted" href="/takip?kod=<%= t.takipKodu %>" target="_blank">Müşterinin gördüğü sayfayı aç</a>
+      <a class="ikincil" href="/takip?kod=<%= t.takipKodu %>" target="_blank">Müşterinin gördüğü sayfayı aç</a>
     </form>
 
     <form class="detay-blok" method="post" action="/admin/talepler/<%= t._id %>?_method=DELETE" data-onay="<%= t.takipKodu %> numaralı talep ve tüm dosyaları kalıcı olarak silinecek. Emin misiniz?">
       <h2 style="font-size:1.4rem">Talebi sil</h2>
-      <p class="muted">Talep, fotoğrafları ve dosyaları kalıcı olarak silinir. Müşteri takip kodu artık çalışmaz.</p>
+      <p class="ikincil">Talep, fotoğrafları ve dosyaları kalıcı olarak silinir. Müşteri takip kodu artık çalışmaz.</p>
       <button class="btn tehlike kucuk" type="submit">Kalıcı olarak sil</button>
     </form>
   </aside>

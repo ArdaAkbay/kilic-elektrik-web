@@ -1,22 +1,34 @@
 <%- include('../partials/ust') %>
 <% const d = degerler; const sinif = (a) => hatalar[a] ? 'alan hatali' : 'alan'; const aria = (a) => hatalar[a] ? `aria-invalid="true" aria-describedby="${a}-hata"` : ''; const kapsam = d.kapsam || []; %>
 
-<div class="wrap">
-  <div class="sayfa-bas">
+<div class="sayfa-bas">
+  <div class="wrap">
     <p class="yol"><a href="/">Ana sayfa</a> / Projem için</p>
     <h1>Projem için</h1>
-    <p class="giris">Bina, mağaza, ofis ya da atölye. Projelerde fiyat keşif ve proje incelemesinden sonra verilir. Aşağıdaki bilgileri bırakın, ustamız sizi arayıp görüşme ayarlasın.</p>
+    <p class="giris">Fabrika, depo, mağaza, ofis ya da konut projesi. Fiyat keşif ve proje incelemesinden sonra verilir. Aşağıdaki bilgileri bırakın, ustamız sizi arayıp görüşme ayarlasın.</p>
   </div>
 </div>
-<div class="wall ince" role="presentation"></div>
+<div class="tava ince" role="presentation"></div>
 
-<section>
+<section style="padding-top:40px">
   <div class="wrap yan-yana">
     <form class="form" method="post" action="/projem" enctype="multipart/form-data" novalidate>
       <%- include('../partials/form-ozeti', { hatalar, dosyaUyarisi: true }) %>
 
       <fieldset>
         <legend>Yapı</legend>
+        <div class="<%= sinif('hizmet') %>">
+          <label for="hizmet">İlgili hizmet <span class="istege-bagli">(isteğe bağlı)</span></label>
+          <select id="hizmet" name="hizmet" <%- aria('hizmet') %>>
+            <option value="">Seçmeden devam et</option>
+            <% sabitler.HIZMET_GRUPLARI.forEach((g) => { const grup = hizmetler.filter((h) => h.grup === g.value); if (!grup.length) return; %>
+              <optgroup label="<%= g.label %>">
+                <% grup.forEach((h) => { %><option value="<%= h._id %>"<% if (String(d.hizmet) === String(h._id)) { %> selected<% } %>><%= h.ad %></option><% }) %>
+              </optgroup>
+            <% }) %>
+          </select>
+          <%- include('../partials/alan-hatasi', { alan: 'hizmet' }) %>
+        </div>
         <div class="<%= sinif('yapiTipi') %>">
           <label for="yapiTipi">Yapı tipi</label>
           <select id="yapiTipi" name="yapiTipi" required <%- aria('yapiTipi') %>>
@@ -114,7 +126,7 @@
 
       <div class="form-alt">
         <p>Gönderince size bir takip kodu vereceğiz. Ustamız projeyi inceleyip görüşme için sizi arar.</p>
-        <button class="btn primary" type="submit" data-gonder="Gönderiliyor…">Görüşme talep et</button>
+        <button class="btn birincil" type="submit" data-gonder="Gönderiliyor…">Görüşme talep et</button>
       </div>
     </form>
 
@@ -126,7 +138,7 @@
         <li>Malzeme ve işçiliği kalem kalem gösteren teklif veririz.</li>
         <li>İş takvimini birlikte planlarız.</li>
       </ol>
-      <p class="muted">Önce konuşmak isterseniz:</p>
+      <p>Önce konuşmak isterseniz:</p>
       <a class="tel" href="tel:+<%= isletme.phoneIntl %>"><%= isletme.phoneDisplay %></a>
     </aside>
   </div>

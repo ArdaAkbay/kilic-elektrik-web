@@ -13,6 +13,23 @@ const { bilgiMesaji, sablonDegiskenleri } = require('./middleware/genel');
 const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
 
+// Google Ads kodu sadece GOOGLE_ADS_ID girildiyse yüklenir; o zaman Google'ın adreslerine izin verilir
+const GOOGLE_ADRESLERI = [
+  'https://www.googletagmanager.com',
+  'https://*.googletagmanager.com',
+  'https://www.google.com',
+  'https://google.com',
+  'https://*.google.com',
+  'https://www.google.com.tr',
+  'https://*.doubleclick.net',
+  'https://www.googleadservices.com',
+  'https://*.googlesyndication.com',
+  'https://*.google-analytics.com',
+];
+const reklam = config.googleAds.id
+  ? { script: ['https://www.googletagmanager.com', 'https://*.googletagmanager.com', 'https://www.googleadservices.com', 'https://*.doubleclick.net'], diger: GOOGLE_ADRESLERI }
+  : { script: [], diger: [] };
+
 function uygulamaOlustur() {
   const app = express();
 
@@ -27,10 +44,12 @@ function uygulamaOlustur() {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'"],
+          scriptSrc: ["'self'", ...reklam.script],
           styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-          imgSrc: ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com'],
+          imgSrc: ["'self'", 'data:', 'blob:', ...reklam.diger],
+          connectSrc: ["'self'", ...reklam.diger],
+          frameSrc: ["'self'", ...reklam.diger],
           formAction: ["'self'"],
           frameAncestors: ["'none'"],
           upgradeInsecureRequests: config.isProd ? [] : null,

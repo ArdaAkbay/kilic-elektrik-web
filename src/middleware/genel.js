@@ -16,6 +16,8 @@ function bilgiMesaji(req, res, next) {
 // Tüm şablonlarda kullanılan değişkenler ve yardımcılar
 function sablonDegiskenleri(req, res, next) {
   res.locals.isletme = config.business;
+  res.locals.reklam = config.googleAds; // Google Ads kimliği boşsa şablonlar hiçbir reklam kodu eklemez
+  res.locals.siteAdresi = config.siteUrl || `${req.protocol}://${req.get('host')}`;
   res.locals.yol = req.path;
   res.locals.girisYapan = req.session.kullaniciAdi || null;
   res.locals.sabitler = sabitler;

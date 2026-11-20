@@ -3,10 +3,12 @@
 const path = require('path');
 const multer = require('multer');
 
-const GORSEL_UZANTILARI = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'];
+// HEIC kabul edilmez: iPhone, dosya seçme alanı HEIC istemediğinde fotoğrafı kendiliğinden JPEG'e çevirir.
+const GORSEL_UZANTILARI = ['.jpg', '.jpeg', '.png', '.webp'];
 
 function gorselMi(dosya) {
   const uzanti = path.extname(dosya.originalname).toLowerCase();
+  if (['.heic', '.heif'].includes(uzanti) || /hei[cf]/.test(dosya.mimetype)) return false;
   return dosya.mimetype.startsWith('image/') || GORSEL_UZANTILARI.includes(uzanti);
 }
 
@@ -28,7 +30,7 @@ function yukle({ alan, maxAdet, maxMB, tur }) {
     limits: { fileSize: maxMB * 1024 * 1024, files: maxAdet },
     fileFilter: (req, dosya, cb) => {
       if (kontrol(dosya)) return cb(null, true);
-      req.yuklemeHatasi = tur === 'pdf' ? 'Proje dosyası PDF olmalı.' : 'Sadece fotoğraf yükleyebilirsiniz (JPG, PNG, WEBP, HEIC).';
+      req.yuklemeHatasi = tur === 'pdf' ? 'Proje dosyası PDF olmalı.' : 'Sadece JPG, PNG veya WEBP fotoğraf yükleyebilirsiniz.';
       cb(null, false);
     },
   }).array(alan, maxAdet);
@@ -56,5 +58,6 @@ function yukle({ alan, maxAdet, maxMB, tur }) {
 module.exports = {
   evFotograflari: yukle({ alan: 'fotograflar', maxAdet: 3, maxMB: 5, tur: 'gorsel' }),
   projeDosyasi: yukle({ alan: 'projeDosyasi', maxAdet: 1, maxMB: 10, tur: 'pdf' }),
-  isFotograflari: yukle({ alan: 'fotograflar', maxAdet: 6, maxMB: 8, tur: 'gorsel' }),
+  isFotograflari: yukle({ alan: 'fotograflar', maxAdet: 6, maxMB: 10, tur: 'gorsel' }),
+  hizmetFotografi: yukle({ alan: 'fotograf', maxAdet: 1, maxMB: 10, tur: 'gorsel' }),
 };

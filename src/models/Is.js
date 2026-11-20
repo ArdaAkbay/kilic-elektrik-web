@@ -10,6 +10,7 @@ const isSchema = new mongoose.Schema(
     fotograflar: [
       {
         url: { type: String, required: true },
+        kucukUrl: String, // galeri küçük resmi
         publicId: String,
         _id: false,
       },

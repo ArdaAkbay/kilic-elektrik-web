@@ -1,38 +1,54 @@
 <%- include('../partials/ust') %>
 
-<div class="wrap">
-  <div class="sayfa-bas">
+<div class="sayfa-bas">
+  <div class="wrap">
     <p class="yol"><a href="/">Ana sayfa</a> / Yaptığımız işler</p>
     <h1>Yaptığımız işler</h1>
-    <p class="giris">Evden fabrikaya, kendi ekibimizle yaptığımız işlerden bir seçki. Fotoğrafların hepsi kendi işlerimizden.</p>
+    <p class="giris">Ekibimizin tamamladığı işlerden fotoğraflar. Bu sayfaya yalnızca kendi işlerimizin fotoğraflarını ekliyoruz.</p>
   </div>
-  <nav class="filtre" aria-label="Kategoriye göre filtrele">
-    <a href="/isler" aria-current="<%= !kategori %>">Tümü</a>
-    <% sabitler.IS_KATEGORILERI.forEach((k) => { %>
-      <a href="/isler?kategori=<%= k.value %>" aria-current="<%= kategori === k.value %>"><%= k.label %></a>
-    <% }) %>
-  </nav>
 </div>
+<div class="tava ince" role="presentation"></div>
 
-<section style="padding-top:0">
+<section style="padding-top:36px">
   <div class="wrap">
+    <% if (isler.length || kategori) { %>
+      <nav class="filtre" aria-label="Kategoriye göre filtrele">
+        <a href="/isler" aria-current="<%= !kategori %>">Tümü</a>
+        <% sabitler.IS_KATEGORILERI.forEach((k) => { %>
+          <a href="/isler?kategori=<%= k.value %>" aria-current="<%= kategori === k.value %>"><%= k.label %></a>
+        <% }) %>
+      </nav>
+    <% } %>
     <% if (isler.length) { %>
-      <div class="grid">
-        <% isler.forEach((is) => { %>
+      <div class="galeri">
+        <% isler.forEach((is) => { const [ilk, ...diger] = is.fotograflar; %>
           <figure>
-            <img src="<%= is.fotograflar[0] && is.fotograflar[0].url %>" alt="<%= is.baslik %>" loading="lazy">
-            <% if (is.fotograflar.length > 1) { %><span class="adet"><%= is.fotograflar.length %> fotoğraf</span><% } %>
-            <figcaption><b><%= is.baslik %></b><span><%= labelOf(sabitler.IS_KATEGORILERI, is.kategori) %><% if (is.aciklama) { %> · <%= is.aciklama %><% } %></span></figcaption>
+            <div class="foto">
+              <img src="<%= ilk.kucukUrl || ilk.url %>" alt="<%= is.baslik %>" loading="lazy">
+              <% if (diger.length) { %><span class="adet"><%= is.fotograflar.length %> fotoğraf</span><% } %>
+            </div>
+            <figcaption><b><%= is.baslik %></b><span><%= labelOf(sabitler.IS_KATEGORILERI, is.kategori) %> · <%= tarih(is.tarih) %><% if (is.aciklama) { %> · <%= is.aciklama %><% } %></span></figcaption>
+            <% if (diger.length) { %>
+              <details>
+                <summary>Diğer fotoğraflar</summary>
+                <div class="ek-fotolar">
+                  <% diger.forEach((f, i) => { %><a href="<%= f.url %>" target="_blank" rel="noopener"><img src="<%= f.kucukUrl || f.url %>" alt="<%= is.baslik %>, fotoğraf <%= i + 2 %>" loading="lazy"></a><% }) %>
+                </div>
+              </details>
+            <% } %>
           </figure>
         <% }) %>
       </div>
     <% } else { %>
-      <p class="bos">Bu kategoride henüz iş eklenmedi.</p>
+      <div class="bos">
+        <h3><%= kategori ? 'Bu kategoride henüz iş yok' : 'Yeni işlerimizin fotoğrafları yakında burada' %></h3>
+        <p>O zamana kadar hizmetlerimize göz atabilir ya da projenizi anlatabilirsiniz.</p>
+        <div class="eylemler">
+          <a class="btn koyu kucuk" href="/hizmetler">Hizmetlerimiz</a>
+          <a class="btn cerceve kucuk" href="/projem">Proje görüşmesi talep et</a>
+        </div>
+      </div>
     <% } %>
-    <div class="actions" style="margin-top:36px">
-      <a class="btn primary" href="/evim">Evim için talep oluştur</a>
-      <a class="btn ghost" href="/projem">Projem için görüşelim</a>
-    </div>
   </div>
 </section>
 

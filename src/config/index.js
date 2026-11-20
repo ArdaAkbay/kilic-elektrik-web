@@ -21,8 +21,13 @@ const config = {
   resendApiKey: env.RESEND_API_KEY || '',
   mailFrom: env.MAIL_FROM || 'Kılıç Elektrik <onboarding@resend.dev>',
 
-  // Cloudinary tanımlıysa dosyalar oraya, değilse public/uploads klasörüne kaydedilir
-  cloudinaryUrl: env.CLOUDINARY_URL || '',
+  // Google Ads (isteğe bağlı). Reklam hesabı açılınca Google Ads'ten alınan değerler girilir.
+  // Boş bırakılırsa sitede hiçbir reklam/takip kodu yüklenmez.
+  googleAds: {
+    id: (env.GOOGLE_ADS_ID || '').trim(), // örn. AW-123456789
+    talepEtiketi: (env.GOOGLE_ADS_TALEP_ETIKETI || '').trim(), // "talep gönderildi" dönüşümünün etiketi
+    aramaEtiketi: (env.GOOGLE_ADS_ARAMA_ETIKETI || '').trim(), // "aradı / WhatsApp'tan yazdı" dönüşümünün etiketi
+  },
 
   // Sitenin herkese açık adresi (e-postadaki panel linki için)
   siteUrl: (env.SITE_URL || '').replace(/\/$/, ''),

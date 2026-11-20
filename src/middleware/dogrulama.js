@@ -1,7 +1,7 @@
 // Sunucu tarafı form doğrulama kuralları (express-validator).
 // Tarayıcıdaki kontroller (required, pattern) kullanıcıya kolaylık içindir; asıl güvenlik buradadır.
 const { body, validationResult, matchedData } = require('express-validator');
-const { YAPI_TIPLERI, PROJE_KAPSAMI, UYGUN_ZAMANLAR, IS_KATEGORILERI, values } = require('../utils/constants');
+const { YAPI_TIPLERI, PROJE_KAPSAMI, UYGUN_ZAMANLAR, IS_KATEGORILERI, HIZMET_GRUPLARI, values } = require('../utils/constants');
 
 // "0534 873 00 10", "+90 534...", "5348730010" → "0534 873 00 10"
 function telefonDuzenle(deger) {
@@ -33,6 +33,7 @@ const evTalepKurallari = [
 ];
 
 const projeTalepKurallari = [
+  body('hizmet').optional({ values: 'falsy' }).isMongoId().withMessage('Geçerli bir hizmet seçin.'),
   body('firma').optional({ values: 'falsy' }).trim().isLength({ max: 80 }).withMessage('Firma adı en fazla 80 karakter olabilir.'),
   body('eposta').optional({ values: 'falsy' }).trim().isEmail().withMessage('Geçerli bir e-posta adresi yazın.').normalizeEmail({ gmail_remove_dots: false }),
   body('yapiTipi').isIn(values(YAPI_TIPLERI)).withMessage('Yapı tipini seçin.'),
@@ -48,9 +49,17 @@ const projeTalepKurallari = [
 
 const hizmetKurallari = [
   body('ad').trim().isLength({ min: 2, max: 60 }).withMessage('Hizmet adı 2–60 karakter olmalı.'),
-  body('aciklama').optional({ values: 'falsy' }).trim().isLength({ max: 240 }).withMessage('Açıklama en fazla 240 karakter.'),
+  body('kapi').isIn(['ev', 'proje']).withMessage('Hizmetin nerede görüneceğini seçin.'),
+  body('grup')
+    .if(body('kapi').equals('proje'))
+    .isIn(values(HIZMET_GRUPLARI))
+    .withMessage('Proje hizmetleri için bir grup seçin.'),
+  body('kisaAciklama').trim().isLength({ min: 10, max: 160 }).withMessage('Kısa açıklama 10–160 karakter olmalı.'),
+  body('aciklama').optional({ values: 'falsy' }).trim().isLength({ max: 1200 }).withMessage('Uzun açıklama en fazla 1200 karakter.'),
   body('sira').optional({ values: 'falsy' }).isInt({ min: 0, max: 999 }).withMessage('Sıra 0–999 arası bir sayı olmalı.').toInt(),
   body('aktif').customSanitizer((v) => v === 'on' || v === 'true' || v === true),
+  body('oneCikan').customSanitizer((v) => v === 'on' || v === 'true' || v === true),
+  body('fotografiKaldir').customSanitizer((v) => v === 'on' || v === 'true' || v === true),
 ];
 
 const isKurallari = [

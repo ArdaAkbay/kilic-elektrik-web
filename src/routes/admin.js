@@ -40,9 +40,9 @@ router.delete('/isler/:id', hata(c.isSil));
 // Hizmetler: tam CRUD
 router.get('/hizmetler', hata(c.hizmetler));
 router.get('/hizmetler/yeni', hata(c.hizmetYeniForm));
-router.post('/hizmetler', hizmetKurallari, hata(c.hizmetOlustur));
+router.post('/hizmetler', yukleme.hizmetFotografi, hizmetKurallari, hata(c.hizmetOlustur));
 router.get('/hizmetler/:id/duzenle', hata(c.hizmetDuzenleForm));
-router.put('/hizmetler/:id', hizmetKurallari, hata(c.hizmetGuncelle));
+router.put('/hizmetler/:id', yukleme.hizmetFotografi, hizmetKurallari, hata(c.hizmetGuncelle));
 router.delete('/hizmetler/:id', hata(c.hizmetSil));
 
 module.exports = router;

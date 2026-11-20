@@ -5,7 +5,7 @@
 
 <div class="panel-bas">
   <div>
-    <p class="muted"><a href="/admin/isler">İşler</a> / <%= yeni ? 'Yeni' : is.baslik %></p>
+    <p class="ikincil"><a href="/admin/isler">İşler</a> / <%= yeni ? 'Yeni' : is.baslik %></p>
     <h1><%= baslik %></h1>
   </div>
 </div>
@@ -53,7 +53,7 @@
   <div class="<%= sinif('fotograflar') %>">
     <span class="etiket" id="foto-etiket"><%= yeni ? 'Fotoğraflar' : 'Fotoğraf ekle' %> <span class="istege-bagli">(toplam en fazla 6, ilk fotoğraf kapak olur)</span></span>
     <div class="dosya-kutu">
-      <input id="fotograflar" name="fotograflar" type="file" accept="image/*,.heic,.heif" multiple data-onizleme="foto-onizleme" data-max="6" data-max-mb="8" aria-labelledby="foto-etiket">
+      <input id="fotograflar" name="fotograflar" type="file" accept="image/jpeg,image/png,image/webp" multiple data-onizleme="foto-onizleme" data-max="6" data-max-mb="10" aria-labelledby="foto-etiket">
       <div class="onizleme" id="foto-onizleme"></div>
     </div>
     <%- include('../partials/alan-hatasi', { alan: 'fotograflar' }) %>
@@ -62,8 +62,8 @@
   <label class="onay"><input type="checkbox" name="oneCikan"<% if (is.oneCikan) { %> checked<% } %>><span>Ana sayfada öne çıkar</span></label>
 
   <div class="form-alt">
-    <a class="muted" href="/admin/isler">Vazgeç</a>
-    <button class="btn primary" type="submit" data-gonder="Kaydediliyor…"><%= yeni ? 'İşi ekle' : 'Değişiklikleri kaydet' %></button>
+    <a class="ikincil" href="/admin/isler">Vazgeç</a>
+    <button class="btn birincil" type="submit" data-gonder="Kaydediliyor…"><%= yeni ? 'İşi ekle' : 'Değişiklikleri kaydet' %></button>
   </div>
 </form>
 

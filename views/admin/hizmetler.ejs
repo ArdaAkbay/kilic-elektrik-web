@@ -3,35 +3,60 @@
 <div class="panel-bas">
   <div>
     <h1>Hizmetler</h1>
-    <p class="alt-baslik">"Evim için" sayfasında ve talep formunda görünen işler. Pasif hizmetler sitede görünmez.</p>
+    <p class="alt-baslik">Sitedeki hizmet kartları ve "Evim için" listesi. Pasif hizmetler sitede görünmez; ana sayfada "öne çıkan" proje hizmetleri gösterilir.</p>
   </div>
-  <a class="btn primary" href="/admin/hizmetler/yeni">Yeni hizmet</a>
+  <div class="hizli-eylemler">
+    <a class="btn birincil kucuk" href="/admin/hizmetler/yeni?kapi=proje">Yeni proje hizmeti</a>
+    <a class="btn cerceve kucuk" href="/admin/hizmetler/yeni?kapi=ev">Yeni ev hizmeti</a>
+  </div>
 </div>
 
-<% if (hizmetler.length) { %>
-  <div class="tablo-kap">
-    <table class="tablo">
-      <thead><tr><th>Sıra</th><th>Hizmet</th><th>Açıklama</th><th>Durum</th><th><span class="sr-only">İşlemler</span></th></tr></thead>
-      <tbody>
-        <% hizmetler.forEach((h) => { %>
-          <tr class="<%= h.aktif ? '' : 'pasif' %>">
-            <td class="sayi"><%= h.sira %></td>
-            <td><b><%= h.ad %></b></td>
-            <td class="muted"><%= h.aciklama || '–' %></td>
-            <td><span class="rozet <%= h.aktif ? 'acik' : '' %>"><%= h.aktif ? 'Sitede' : 'Pasif' %></span></td>
-            <td>
-              <div class="islemler">
-                <a class="btn ghost kucuk" href="/admin/hizmetler/<%= h._id %>/duzenle">Düzenle</a>
-                <form method="post" action="/admin/hizmetler/<%= h._id %>?_method=DELETE" data-onay="&quot;<%= h.ad %>&quot; silinsin mi? Bu hizmetle gelmiş eski talepler etkilenmez."><button class="btn tehlike kucuk" type="submit">Sil</button></form>
-              </div>
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </div>
-<% } else { %>
-  <p class="bos">Henüz hizmet yok. "Evim için" sayfası boş görünecek; ilk hizmeti ekleyin.</p>
+<% const satir = (h, fotolu) => { %>
+  <tr class="<%= h.aktif ? '' : 'pasif' %>">
+    <td class="sayi"><%= h.sira %></td>
+    <% if (fotolu) { %>
+      <td><% if (h.gorsel && h.gorsel.url) { %><img class="kucuk-foto" src="<%= h.gorsel.kucukUrl || h.gorsel.url %>" alt=""><% } else { %><span class="kucuk-foto bos">Foto yok</span><% } %></td>
+    <% } %>
+    <td><b><%= h.ad %></b><br><span class="ikincil"><%= h.kisaAciklama || '' %></span></td>
+    <% if (fotolu) { %><td><%= h.grup ? labelOf(sabitler.HIZMET_GRUPLARI, h.grup) : '–' %></td><% } %>
+    <td>
+      <span class="rozet <%= h.aktif ? 'acik' : '' %>"><%= h.aktif ? 'Sitede' : 'Pasif' %></span>
+      <% if (h.oneCikan) { %><span class="rozet vurgu">Ana sayfada</span><% } %>
+    </td>
+    <td>
+      <div class="islemler">
+        <% if (fotolu && h.aktif) { %><a class="btn cerceve kucuk" href="/hizmetler/<%= h.slug %>" target="_blank">Gör</a><% } %>
+        <a class="btn cerceve kucuk" href="/admin/hizmetler/<%= h._id %>/duzenle">Düzenle</a>
+        <form method="post" action="/admin/hizmetler/<%= h._id %>?_method=DELETE" data-onay="&quot;<%= h.ad %>&quot; silinsin mi? Bu hizmetle gelmiş eski talepler etkilenmez."><button class="btn tehlike kucuk" type="submit">Sil</button></form>
+      </div>
+    </td>
+  </tr>
 <% } %>
+
+<div class="tablo-bolum">
+  <h2>Proje hizmetleri (<%= proje.length %>)</h2>
+  <p class="ikincil">"Hizmetlerimiz" sayfasında fotoğraflı kart olarak görünür; her birinin kendi sayfası vardır.</p>
+  <% if (proje.length) { %>
+    <div class="tablo-kap">
+      <table class="tablo">
+        <thead><tr><th>Sıra</th><th>Fotoğraf</th><th>Hizmet</th><th>Grup</th><th>Durum</th><th><span class="sr-only">İşlemler</span></th></tr></thead>
+        <tbody><% proje.forEach((h) => satir(h, true)) %></tbody>
+      </table>
+    </div>
+  <% } else { %><p class="bos">Henüz proje hizmeti yok.</p><% } %>
+</div>
+
+<div class="tablo-bolum">
+  <h2>Ev hizmetleri (<%= ev.length %>)</h2>
+  <p class="ikincil">"Evim için" sayfasında liste olarak ve ev talep formunda seçenek olarak görünür.</p>
+  <% if (ev.length) { %>
+    <div class="tablo-kap">
+      <table class="tablo">
+        <thead><tr><th>Sıra</th><th>Hizmet</th><th>Durum</th><th><span class="sr-only">İşlemler</span></th></tr></thead>
+        <tbody><% ev.forEach((h) => satir(h, false)) %></tbody>
+      </table>
+    </div>
+  <% } else { %><p class="bos">Henüz ev hizmeti yok.</p><% } %>
+</div>
 
 <%- include('../partials/admin-alt') %>

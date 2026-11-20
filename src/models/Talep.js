@@ -5,7 +5,7 @@ const { DURUMLAR, YAPI_TIPLERI, PROJE_KAPSAMI, UYGUN_ZAMANLAR, values } = requir
 const dosyaSchema = new mongoose.Schema(
   {
     url: { type: String, required: true },
-    publicId: String, // Cloudinary'den silebilmek için
+    publicId: String, // veritabanındaki dosyayı silebilmek için (db:<id>)
     ad: String, // orijinal dosya adı
   },
   { _id: false }
@@ -31,6 +31,7 @@ const talepSchema = new mongoose.Schema(
     fotograflar: [dosyaSchema],
 
     // Proje talebi
+    // (hizmet ve hizmetAdi alanları proje talebinde de kullanılır: "Bu hizmet için talep oluştur")
     firma: { type: String, trim: true, maxlength: 80 },
     eposta: { type: String, trim: true, lowercase: true, maxlength: 120 },
     yapiTipi: { type: String, enum: values(YAPI_TIPLERI) },
@@ -64,7 +65,7 @@ talepSchema.methods.toTakipOzeti = function () {
   return {
     takipKodu: this.takipKodu,
     tur: this.tur,
-    baslik: this.tur === 'ev' ? this.hizmetAdi : 'Proje görüşme talebi',
+    baslik: this.tur === 'ev' ? this.hizmetAdi : this.hizmetAdi ? `Proje: ${this.hizmetAdi}` : 'Proje görüşme talebi',
     durum: this.durum,
     durumGecmisi: this.durumGecmisi,
     olusturma: this.createdAt,

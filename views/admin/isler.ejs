@@ -5,7 +5,7 @@
     <h1>Yaptığımız işler</h1>
     <p class="alt-baslik">Sitedeki galeri. "Öne çıkan" işaretli olanlar ana sayfada görünür (en yeni 3 tanesi).</p>
   </div>
-  <a class="btn primary" href="/admin/isler/yeni">Yeni iş ekle</a>
+  <a class="btn birincil" href="/admin/isler/yeni">İş fotoğrafı ekle</a>
 </div>
 
 <% if (isler.length) { %>
@@ -15,14 +15,14 @@
       <tbody>
         <% isler.forEach((is) => { %>
           <tr>
-            <td><img class="kucuk" src="<%= is.fotograflar[0] && is.fotograflar[0].url %>" alt=""></td>
-            <td><b><%= is.baslik %></b><br><span class="muted"><%= is.fotograflar.length %> fotoğraf</span></td>
+            <td><img class="kucuk-foto" src="<%= is.fotograflar[0] && (is.fotograflar[0].kucukUrl || is.fotograflar[0].url) %>" alt=""></td>
+            <td><b><%= is.baslik %></b><br><span class="ikincil"><%= is.fotograflar.length %> fotoğraf</span></td>
             <td><%= labelOf(sabitler.IS_KATEGORILERI, is.kategori) %></td>
             <td class="sayi"><%= tarih(is.tarih) %></td>
-            <td><% if (is.oneCikan) { %><span class="rozet vurgu">Öne çıkan</span><% } else { %><span class="muted">–</span><% } %></td>
+            <td><% if (is.oneCikan) { %><span class="rozet vurgu">Öne çıkan</span><% } else { %><span class="ikincil">–</span><% } %></td>
             <td>
               <div class="islemler">
-                <a class="btn ghost kucuk" href="/admin/isler/<%= is._id %>/duzenle">Düzenle</a>
+                <a class="btn cerceve kucuk" href="/admin/isler/<%= is._id %>/duzenle">Düzenle</a>
                 <form method="post" action="/admin/isler/<%= is._id %>?_method=DELETE" data-onay="&quot;<%= is.baslik %>&quot; galeriden silinsin mi?"><button class="btn tehlike kucuk" type="submit">Sil</button></form>
               </div>
             </td>

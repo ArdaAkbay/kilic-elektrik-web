@@ -18,6 +18,7 @@ function talepEpostasi(talep) {
     satirlar.push(['Hizmet', talep.hizmetAdi], ['Uygun zaman', labelOf(UYGUN_ZAMANLAR, talep.uygunZaman)]);
     satirlar.push(['Fotoğraf', `${talep.fotograflar.length} adet`]);
   } else {
+    if (talep.hizmetAdi) satirlar.push(['İlgili hizmet', talep.hizmetAdi]);
     if (talep.firma) satirlar.push(['Firma', talep.firma]);
     satirlar.push(
       ['Yapı tipi', labelOf(YAPI_TIPLERI, talep.yapiTipi)],

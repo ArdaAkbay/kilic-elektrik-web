@@ -1,14 +1,27 @@
 </main>
+<div class="tava" role="presentation"></div>
 <footer class="alt">
   <div class="wrap">
-    <img src="/img/logo.png" alt="" width="34" height="29">
-    <span><%= isletme.name %> · <%= isletme.address %></span>
+    <div class="alt-marka"><img src="/img/logo-acik.png" alt="" width="34" height="29"><span><%= isletme.name %> · <%= isletme.address %></span></div>
     <nav aria-label="Alt menü">
+      <a href="/hizmetler">Hizmetlerimiz</a>
       <a href="/takip">Talep takibi</a>
-      <a href="/kvkk">KVKK aydınlatma metni</a>
+      <a href="/kvkk">KVKK ve çerezler</a>
+      <% if (reklam.id) { %><button class="link-btn" type="button" data-cerez-ayar>Çerez tercihleri</button><% } %>
       <a href="/admin">Usta girişi</a>
     </nav>
   </div>
 </footer>
+<% if (reklam.id) { %>
+<div class="cerez" id="cerez-bandi" role="dialog" aria-live="polite" aria-label="Çerez tercihi" hidden>
+  <div class="wrap">
+    <p>Reklamlarımızın işe yarayıp yaramadığını ölçmek için Google çerezlerini kullanmak istiyoruz. İzin vermezseniz bu çerezler kullanılmaz; site aynı şekilde çalışır. <a href="/kvkk#cerezler">Ayrıntılar</a></p>
+    <div class="eylemler">
+      <button class="btn cerceve kucuk" type="button" data-cerez="red">Reddet</button>
+      <button class="btn koyu kucuk" type="button" data-cerez="kabul">Kabul et</button>
+    </div>
+  </div>
+</div>
+<% } %>
 </body>
 </html>
