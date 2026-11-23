@@ -4,7 +4,7 @@ Bağcılar'daki Kılıç Elektrik için hizmetlerini tanıtan, müşteri talebi 
 BİLP2135 Web ve İnternet Programcılığı II dönem projesi.
 
 **Teknoloji:** Node.js, Express, EJS, MongoDB Atlas (Mongoose), sharp, Resend
-**Canlı adres:** _(Render'a yükledikten sonra buraya yazın)_
+**Canlı adres:** https://kilic-elektrik-web.onrender.com
 
 ---
 
@@ -129,7 +129,7 @@ Kümeye "sample dataset" yüklendiyse alan açmak için **Data Explorer**'da `sa
 | `SESSION_SECRET` | Uzun rastgele bir metin |
 | `ADMIN_USERNAME` | `usta` |
 | `ADMIN_PASSWORD` | Güçlü bir şifre |
-| `SITE_URL` | Render'ın verdiği adres, örn. `https://kilic-elektrik.onrender.com` |
+| `SITE_URL` | Render'ın verdiği adres, örn. `https://kilic-elektrik-web.onrender.com` |
 | `RESEND_API_KEY`, `NOTIFY_EMAIL` | İsteğe bağlı, e-posta için |
 
 5. **Create Web Service**. Loglarda `Kılıç Elektrik ... portunda çalışıyor` yazmalı. İlk açılışta 27 hizmet ve usta hesabı otomatik oluşur.
